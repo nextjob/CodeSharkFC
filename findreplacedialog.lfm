@@ -1,0 +1,360 @@
+object LazFindReplaceDialog: TLazFindReplaceDialog
+  Left = 288
+  Height = 373
+  Top = 156
+  Width = 420
+  HorzScrollBar.Page = 419
+  VertScrollBar.Page = 372
+  ActiveControl = TextToFindComboBox
+  BorderIcons = [biSystemMenu]
+  BorderStyle = bsDialog
+  Caption = 'Find'
+  ClientHeight = 373
+  ClientWidth = 420
+  Constraints.MinHeight = 312
+  Constraints.MinWidth = 300
+  Font.CharSet = EASTEUROPE_CHARSET
+  Font.Color = clBlack
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Pitch = fpVariable
+  Font.Quality = fqDraft
+  KeyPreview = True
+  OnChangeBounds = FormChangeBounds
+  OnClose = FormClose
+  Position = poDesktopCenter
+  LCLVersion = '1.8.4.0'
+  object TextToFindLabel: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = TextToFindComboBox
+    AnchorSideTop.Side = asrCenter
+    Left = 6
+    Height = 13
+    Top = 16
+    Width = 20
+    Alignment = taRightJustify
+    BorderSpacing.Left = 6
+    Caption = 'Find'
+    FocusControl = TextToFindComboBox
+    ParentColor = False
+  end
+  object ReplaceWithLabel: TLabel
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = ReplaceTextComboBox
+    AnchorSideTop.Side = asrCenter
+    Left = 6
+    Height = 13
+    Top = 43
+    Width = 38
+    Alignment = taRightJustify
+    BorderSpacing.Left = 6
+    Caption = 'Replace'
+    FocusControl = ReplaceTextComboBox
+    ParentColor = False
+  end
+  object TextToFindComboBox: TComboBox
+    AnchorSideLeft.Control = TextToFindLabel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 38
+    Height = 21
+    Top = 12
+    Width = 376
+    Anchors = [akTop, akLeft, akRight]
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactRetainPrefixCase, cbactSearchAscending]
+    BorderSpacing.Left = 6
+    BorderSpacing.Around = 6
+    ItemHeight = 13
+    OnKeyDown = TextToFindComboboxKeyDown
+    TabOrder = 0
+  end
+  object ReplaceTextComboBox: TComboBox
+    AnchorSideLeft.Control = ReplaceWithLabel
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideRight.Control = Owner
+    AnchorSideRight.Side = asrBottom
+    Left = 56
+    Height = 21
+    Top = 39
+    Width = 358
+    Anchors = [akTop, akLeft, akRight]
+    AutoComplete = True
+    AutoCompleteText = [cbactEnabled, cbactEndOfLineComplete, cbactRetainPrefixCase, cbactSearchAscending]
+    BorderSpacing.Left = 6
+    BorderSpacing.Around = 6
+    ItemHeight = 13
+    OnKeyDown = TextToFindComboboxKeyDown
+    TabOrder = 1
+  end
+  object OptionsGroupBox: TGroupBox
+    AnchorSideLeft.Control = Owner
+    AnchorSideTop.Control = ReplaceTextComboBox
+    AnchorSideTop.Side = asrBottom
+    AnchorSideBottom.Control = BtnPanel
+    Left = 6
+    Height = 263
+    Top = 66
+    Width = 199
+    Anchors = [akTop, akLeft, akBottom]
+    BorderSpacing.Left = 6
+    BorderSpacing.Top = 6
+    BorderSpacing.Bottom = 6
+    Caption = 'Options'
+    ClientHeight = 245
+    ClientWidth = 195
+    TabOrder = 2
+    OnResize = OptionsGroupBoxResize
+    object PromptOnReplaceCheckBox: TCheckBox
+      Left = 6
+      Height = 17
+      Top = 128
+      Width = 183
+      Align = alTop
+      BorderSpacing.Top = 6
+      BorderSpacing.Around = 6
+      Caption = 'Confirm on changes'
+      Checked = True
+      ParentShowHint = False
+      ShowHint = True
+      State = cbChecked
+      TabOrder = 4
+    end
+    object MultiLineCheckBox: TCheckBox
+      Left = 6
+      Height = 17
+      Top = 99
+      Width = 183
+      Align = alTop
+      BorderSpacing.Top = 6
+      BorderSpacing.Around = 6
+      Caption = 'Multiline search'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 3
+    end
+    object RegularExpressionsCheckBox: TCheckBox
+      Left = 6
+      Height = 17
+      Top = 70
+      Width = 183
+      Align = alTop
+      BorderSpacing.Top = 6
+      BorderSpacing.Around = 6
+      Caption = 'Regular expression'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 2
+    end
+    object WholeWordsOnlyCheckBox: TCheckBox
+      Left = 6
+      Height = 17
+      Top = 41
+      Width = 183
+      Align = alTop
+      BorderSpacing.Top = 6
+      BorderSpacing.Around = 6
+      Caption = 'Whole words only'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 1
+    end
+    object CaseSensitiveCheckBox: TCheckBox
+      Left = 6
+      Height = 17
+      Top = 12
+      Width = 183
+      Align = alTop
+      BorderSpacing.Top = 6
+      BorderSpacing.Around = 6
+      Caption = 'Case sensitive'
+      ParentShowHint = False
+      ShowHint = True
+      TabOrder = 0
+    end
+  end
+  object ScopeGroupBox: TGroupBox
+    AnchorSideLeft.Control = OptionsGroupBox
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = OriginGroupBox
+    AnchorSideTop.Side = asrBottom
+    Left = 211
+    Height = 74
+    Top = 146
+    Width = 199
+    BorderSpacing.Around = 6
+    Caption = 'Range'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
+    ChildSizing.ShrinkHorizontal = crsHomogenousSpaceResize
+    ChildSizing.ShrinkVertical = crsHomogenousSpaceResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 56
+    ClientWidth = 195
+    TabOrder = 4
+    object SelectedRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 8
+      Width = 183
+      Caption = 'Selected text'
+      TabOrder = 0
+    end
+    object GlobalRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 33
+      Width = 183
+      Caption = 'Global'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
+    end
+  end
+  object DirectionGroupBox: TGroupBox
+    AnchorSideLeft.Control = OptionsGroupBox
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ScopeGroupBox
+    AnchorSideTop.Side = asrBottom
+    Left = 211
+    Height = 74
+    Top = 226
+    Width = 199
+    BorderSpacing.Around = 6
+    Caption = 'Direction'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
+    ChildSizing.ShrinkHorizontal = crsHomogenousSpaceResize
+    ChildSizing.ShrinkVertical = crsHomogenousSpaceResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 56
+    ClientWidth = 195
+    TabOrder = 5
+    object BackwardRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 8
+      Width = 183
+      Caption = 'Rewid search'
+      TabOrder = 0
+    end
+    object ForwardRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 33
+      Width = 183
+      Caption = 'Forward search'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
+    end
+  end
+  object OriginGroupBox: TGroupBox
+    AnchorSideLeft.Control = OptionsGroupBox
+    AnchorSideLeft.Side = asrBottom
+    AnchorSideTop.Control = ReplaceTextComboBox
+    AnchorSideTop.Side = asrBottom
+    Left = 211
+    Height = 74
+    Top = 66
+    Width = 199
+    BorderSpacing.Around = 6
+    Caption = 'Start'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousSpaceResize
+    ChildSizing.ShrinkHorizontal = crsHomogenousSpaceResize
+    ChildSizing.ShrinkVertical = crsHomogenousSpaceResize
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 56
+    ClientWidth = 195
+    TabOrder = 3
+    object FromCursorRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 8
+      Width = 183
+      AutoSize = False
+      Caption = 'From cursor'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object EntireScopeRadioButton: TRadioButton
+      Left = 6
+      Height = 17
+      Top = 33
+      Width = 183
+      AutoSize = False
+      Caption = 'Entire scope'
+      TabOrder = 1
+    end
+  end
+  object BtnPanel: TPanel
+    Left = 0
+    Height = 38
+    Top = 335
+    Width = 420
+    Align = alBottom
+    AutoSize = True
+    BevelOuter = bvNone
+    ClientHeight = 38
+    ClientWidth = 420
+    Font.CharSet = EASTEUROPE_CHARSET
+    Font.Color = clBlack
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Pitch = fpVariable
+    Font.Quality = fqDraft
+    ParentFont = False
+    TabOrder = 6
+    object ReplaceAllButton: TBitBtn
+      Left = 167
+      Height = 26
+      Top = 6
+      Width = 97
+      Align = alRight
+      AutoSize = True
+      BorderSpacing.Around = 6
+      Caption = '&Replace all'
+      Kind = bkAll
+      OnClick = ReplaceAllButtonClick
+      TabOrder = 0
+    end
+    object OKButton: TBitBtn
+      Left = 270
+      Height = 26
+      Top = 6
+      Width = 60
+      Align = alRight
+      AutoSize = True
+      BorderSpacing.Around = 6
+      Caption = '&OK'
+      Default = True
+      Kind = bkOK
+      OnClick = OkButtonClick
+      TabOrder = 1
+    end
+    object CancelButton: TBitBtn
+      Left = 336
+      Height = 26
+      Top = 6
+      Width = 78
+      Align = alRight
+      AutoSize = True
+      BorderSpacing.Around = 6
+      Cancel = True
+      Caption = 'Cancel'
+      Kind = bkCancel
+      ModalResult = 2
+      OnClick = CancelButtonClick
+      TabOrder = 2
+    end
+  end
+end

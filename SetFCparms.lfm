@@ -1,0 +1,98 @@
+object SetFCparmsFrm: TSetFCparmsFrm
+  Left = 1195
+  Height = 300
+  Top = 438
+  Width = 253
+  Caption = 'Setup Parameters'
+  ClientHeight = 300
+  ClientWidth = 253
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  OnClose = FormClose
+  OnShow = FormShow
+  LCLVersion = '2.0.6.0'
+  object PythonHome: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 24
+    Width = 225
+    EditLabel.Height = 13
+    EditLabel.Width = 225
+    EditLabel.Caption = 'PythonHome Env Value'
+    EditLabel.ParentColor = False
+    TabOrder = 0
+    OnClick = PythonHomeClick
+  end
+  object FreeCadMod: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 59
+    Width = 225
+    EditLabel.Height = 13
+    EditLabel.Width = 225
+    EditLabel.Caption = 'FreeCad Mod Path'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    OnClick = FreeCadModClick
+  end
+  object cbCustStart: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 86
+    Width = 113
+    Caption = 'Custom Start Script'
+    TabOrder = 2
+  end
+  object cbCustPanel: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 109
+    Width = 140
+    Caption = 'Custom View Panel Script'
+    TabOrder = 3
+  end
+  object cbCustSelectObs: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 132
+    Width = 180
+    Caption = 'Custom Selection Observer Script'
+    TabOrder = 4
+  end
+  object cbCustShutdown: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 155
+    Width = 137
+    Caption = 'Custom Shutdown Script'
+    TabOrder = 5
+  end
+  object cbOverWriteScript: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 184
+    Width = 161
+    Caption = 'Overwrite Scripts   *Caution*'
+    Checked = True
+    State = cbChecked
+    TabOrder = 6
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 13
+    Top = 208
+    Width = 220
+    Caption = '* Overwrites Script with Last Executed Copy*'
+    ParentColor = False
+  end
+  object cbFreeCADWarnDisable: TCheckBox
+    Left = 8
+    Height = 19
+    Top = 232
+    Width = 184
+    Caption = 'Disable FreeCAD Window Warning'
+    TabOrder = 7
+  end
+end

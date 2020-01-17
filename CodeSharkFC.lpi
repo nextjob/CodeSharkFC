@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <General>
+      <Flags>
+        <LRSInOutputDirectory Value="False"/>
+      </Flags>
+      <MainUnit Value="0"/>
+      <Title Value="CodeSharkFC"/>
+      <UseAppBundle Value="False"/>
+      <ResourceType Value="res"/>
+      <UseXPManifest Value="True"/>
+      <XPManifest>
+        <TextName Value="CodeSharkFC1"/>
+        <TextDesc Value="CodeShark FreeCad Interface"/>
+      </XPManifest>
+      <Icon Value="0"/>
+    </General>
+    <VersionInfo>
+      <UseVersionInfo Value="True"/>
+      <MinorVersionNr Value="1"/>
+      <CharSet Value="04B0"/>
+      <Attributes pvaDebug="True"/>
+      <StringTable FileDescription="CodeSharkFC" InternalName="CodeSharkFC" LegalCopyright="GNU GPL"/>
+    </VersionInfo>
+    <BuildModes Count="3">
+      <Item1 Name="default" Default="True"/>
+      <Item2 Name="Debug">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="$(ProjPath)\CodeSharkFC64"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="$(ProjPath)\lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <IncludeAssertionCode Value="True"/>
+              <UseAnsiStrings Value="False"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <Checks>
+              <IOChecks Value="True"/>
+              <RangeChecks Value="True"/>
+              <OverflowChecks Value="True"/>
+              <StackChecks Value="True"/>
+            </Checks>
+            <VerifyObjMethodCallValidity Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="0"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <DebugInfoType Value="dsDwarf2Set"/>
+              <UseHeaptrc Value="True"/>
+              <TrashVariables Value="True"/>
+              <UseExternalDbgSyms Value="True"/>
+            </Debugging>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item2>
+      <Item3 Name="Release">
+        <CompilerOptions>
+          <Version Value="11"/>
+          <PathDelim Value="\"/>
+          <Target>
+            <Filename Value="$(ProjPath)\CodeSharkFC64"/>
+          </Target>
+          <SearchPaths>
+            <IncludeFiles Value="$(ProjOutDir)"/>
+            <UnitOutputDirectory Value="$(ProjPath)\lib\$(TargetCPU)-$(TargetOS)"/>
+          </SearchPaths>
+          <Parsing>
+            <SyntaxOptions>
+              <UseAnsiStrings Value="False"/>
+            </SyntaxOptions>
+          </Parsing>
+          <CodeGeneration>
+            <SmartLinkUnit Value="True"/>
+            <TargetCPU Value="x86_64"/>
+            <TargetOS Value="win64"/>
+            <Optimizations>
+              <OptimizationLevel Value="3"/>
+            </Optimizations>
+          </CodeGeneration>
+          <Linking>
+            <Debugging>
+              <GenerateDebugInfo Value="False"/>
+            </Debugging>
+            <LinkSmart Value="True"/>
+            <Options>
+              <Win32>
+                <GraphicApplication Value="True"/>
+              </Win32>
+            </Options>
+          </Linking>
+        </CompilerOptions>
+      </Item3>
+    </BuildModes>
+    <PublishOptions>
+      <Version Value="2"/>
+    </PublishOptions>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="1">
+        <Mode0 Name="default">
+          <local>
+            <LaunchingApplication PathPlusParams="/usr/X11R6/bin/xterm -T 'Lazarus Run Output' -e $(LazarusDir)/tools/runwait.sh $(TargetCmdLine)"/>
+          </local>
+        </Mode0>
+      </Modes>
+    </RunParams>
+    <RequiredPackages Count="6">
+      <Item1>
+        <PackageName Value="P4DLaz"/>
+      </Item1>
+      <Item2>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item2>
+      <Item3>
+        <PackageName Value="LCL"/>
+      </Item3>
+      <Item4>
+        <PackageName Value="SynEdit"/>
+        <MinVersion Major="1" Valid="True"/>
+      </Item4>
+      <Item5>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+        <MinVersion Minor="1" Valid="True"/>
+      </Item5>
+      <Item6>
+        <PackageName Value="Printer4Lazarus"/>
+        <MinVersion Minor="5" Valid="True"/>
+      </Item6>
+    </RequiredPackages>
+    <Units Count="22">
+      <Unit0>
+        <Filename Value="CodeSharkFC.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="8"/>
+        <CursorPos Y="44"/>
+        <UsageCount Value="126"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="srcmain.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMain"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="169"/>
+        <CursorPos X="70" Y="198"/>
+        <UsageCount Value="126"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="tcnv.pas"/>
+        <TopLine Value="54"/>
+        <CursorPos X="22" Y="216"/>
+        <UsageCount Value="13"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="findreplacedialog.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="LazFindReplaceDialog"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="FindReplaceDialog"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="38"/>
+        <CursorPos X="53" Y="54"/>
+        <UsageCount Value="68"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="editoroptions.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="SynEditOptionsForm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="3" Y="285"/>
+        <UsageCount Value="83"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="D:\Lazarus\components\synedit\synedit.pp"/>
+        <UnitName Value="SynEdit"/>
+        <TopLine Value="593"/>
+        <CursorPos X="23" Y="349"/>
+        <UsageCount Value="9"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="templates\class_tobject.pt"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="templates\gplunit.pt"/>
+        <UsageCount Value="9"/>
+        <DefaultSyntaxHighlighter Value="None"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="synsuggestion.pas"/>
+        <CursorPos X="33" Y="12"/>
+        <UsageCount Value="10"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="expression.pas"/>
+        <TopLine Value="33"/>
+        <CursorPos X="5" Y="43"/>
+        <UsageCount Value="10"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="findinfilesdlg.pas"/>
+        <UnitName Value="FindInFilesDlg"/>
+        <TopLine Value="3"/>
+        <UsageCount Value="9"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="ueval.pas"/>
+        <TopLine Value="264"/>
+        <CursorPos Y="272"/>
+        <UsageCount Value="9"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="commandline.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="18"/>
+        <UsageCount Value="12"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="SetFCparms.pas"/>
+        <ComponentName Value="SetFCparmsFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="8"/>
+        <CursorPos Y="25"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="FreeCad.pas"/>
+        <ComponentName Value="FreeCadFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="536"/>
+        <CursorPos X="50" Y="564"/>
+        <UsageCount Value="26"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\lazarus64\components\python4delphi\PythonForDelphi\Components\Sources\Core\PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5449"/>
+        <CursorPos Y="5463"/>
+        <UsageCount Value="9"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="SetTool.pas"/>
+        <ComponentName Value="SetToolFRM"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="1"/>
+        <CursorPos X="57" Y="23"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="about.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="AboutFrm"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="107" Y="29"/>
+        <UsageCount Value="53"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\lazarus\components\python4delphi\PythonForDelphi\Components\Sources\Core\PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5448"/>
+        <CursorPos Y="5461"/>
+        <UsageCount Value="11"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\lazarus\components\python4delphi-master\PythonForDelphi\Components\Sources\Core\PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="5506"/>
+        <CursorPos Y="5529"/>
+        <UsageCount Value="17"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="FreeCad.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="SetTool.lfm"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="LFM"/>
+      </Unit21>
+    </Units>
+    <JumpHistory Count="30" HistoryIndex="29">
+      <Position1>
+        <Filename Value="SetTool.pas"/>
+        <Caret Line="22" Column="57" TopLine="13"/>
+      </Position1>
+      <Position2>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="588" Column="3" TopLine="586"/>
+      </Position2>
+      <Position3>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="589" Column="3" TopLine="587"/>
+      </Position3>
+      <Position4>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="590" Column="3" TopLine="588"/>
+      </Position4>
+      <Position5>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="44" Column="15" TopLine="44"/>
+      </Position5>
+      <Position6>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="65" Column="3" TopLine="44"/>
+      </Position6>
+      <Position7>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="66" Column="3" TopLine="45"/>
+      </Position7>
+      <Position8>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="67" Column="3" TopLine="46"/>
+      </Position8>
+      <Position9>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="812" Column="91" TopLine="785"/>
+      </Position9>
+      <Position10>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="67" Column="3" TopLine="46"/>
+      </Position10>
+      <Position11>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="1121" Column="13" TopLine="1104"/>
+      </Position11>
+      <Position12>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="1115" Column="93" TopLine="1081"/>
+      </Position12>
+      <Position13>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="1136" Column="3" TopLine="1080"/>
+      </Position13>
+      <Position14>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="106" Column="62" TopLine="101"/>
+      </Position14>
+      <Position15>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="65" TopLine="46"/>
+      </Position15>
+      <Position16>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="25" TopLine="8"/>
+      </Position16>
+      <Position17>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="457" Column="66"/>
+      </Position17>
+      <Position18>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="5" Column="49"/>
+      </Position18>
+      <Position19>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="480" Column="22" TopLine="478"/>
+      </Position19>
+      <Position20>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="181" Column="13" TopLine="178"/>
+      </Position20>
+      <Position21>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="438" Column="3" TopLine="422"/>
+      </Position21>
+      <Position22>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="198" Column="70" TopLine="169"/>
+      </Position22>
+      <Position23>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="9" Column="79"/>
+      </Position23>
+      <Position24>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="564" Column="39" TopLine="538"/>
+      </Position24>
+      <Position25>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="645" Column="43" TopLine="617"/>
+      </Position25>
+      <Position26>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="648" Column="39" TopLine="620"/>
+      </Position26>
+      <Position27>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="804" Column="37" TopLine="776"/>
+      </Position27>
+      <Position28>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="1004" Column="34" TopLine="976"/>
+      </Position28>
+      <Position29>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="180" Column="21" TopLine="164"/>
+      </Position29>
+      <Position30>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="308" Column="60" TopLine="281"/>
+      </Position30>
+    </JumpHistory>
+  </ProjectOptions>
+  <CompilerOptions>
+    <Version Value="11"/>
+    <PathDelim Value="\"/>
+    <Target>
+      <Filename Value="$(ProjPath)\CodeSharkFC64"/>
+    </Target>
+    <SearchPaths>
+      <IncludeFiles Value="$(ProjOutDir)"/>
+      <UnitOutputDirectory Value="$(ProjPath)\lib\$(TargetCPU)-$(TargetOS)"/>
+    </SearchPaths>
+    <Parsing>
+      <SyntaxOptions>
+        <UseAnsiStrings Value="False"/>
+      </SyntaxOptions>
+    </Parsing>
+    <CodeGeneration>
+      <TargetCPU Value="x86_64"/>
+      <TargetOS Value="win64"/>
+    </CodeGeneration>
+    <Linking>
+      <Debugging>
+        <UseExternalDbgSyms Value="True"/>
+      </Debugging>
+      <Options>
+        <Win32>
+          <GraphicApplication Value="True"/>
+        </Win32>
+      </Options>
+    </Linking>
+  </CompilerOptions>
+  <Debugging>
+    <Exceptions Count="2">
+      <Item1>
+        <Name Value="ECodetoolError"/>
+      </Item1>
+      <Item2>
+        <Name Value="EFOpenError"/>
+      </Item2>
+    </Exceptions>
+  </Debugging>
+</CONFIG>

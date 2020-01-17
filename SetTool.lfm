@@ -1,0 +1,208 @@
+object SetToolFRM: TSetToolFRM
+  Left = 1079
+  Height = 528
+  Top = 181
+  Width = 194
+  Caption = 'Set Tool'
+  ClientHeight = 528
+  ClientWidth = 194
+  Color = clBtnFace
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  LCLVersion = '2.0.6.0'
+  object Panel1: TPanel
+    Left = 96
+    Height = 80
+    Top = 16
+    Width = 97
+    Alignment = taLeftJustify
+    ClientHeight = 80
+    ClientWidth = 97
+    TabOrder = 0
+    object rbOnLine: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 24
+      Width = 56
+      Caption = 'On Line'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object rbRightofLine: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 40
+      Width = 80
+      Caption = 'Right of Line'
+      TabOrder = 1
+    end
+    object rbLeftofLine: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 56
+      Width = 74
+      Caption = 'Left of Line'
+      TabOrder = 2
+    end
+    object Label1: TLabel
+      Left = 8
+      Height = 13
+      Top = 8
+      Width = 60
+      Caption = 'Tool Position'
+      ParentColor = False
+    end
+  end
+  object RadiusEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 120
+    Width = 81
+    EditLabel.Height = 13
+    EditLabel.Width = 81
+    EditLabel.Caption = 'Tool Radius'
+    EditLabel.ParentColor = False
+    TabOrder = 1
+    Text = '1.00'
+  end
+  object VertFeedEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 168
+    Width = 81
+    EditLabel.Height = 13
+    EditLabel.Width = 81
+    EditLabel.Caption = 'Vert Feed Rate'
+    EditLabel.ParentColor = False
+    TabOrder = 2
+    Text = '0'
+  end
+  object HorzFeedEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 216
+    Width = 81
+    EditLabel.Height = 13
+    EditLabel.Width = 81
+    EditLabel.Caption = 'Horz Feed Rate'
+    EditLabel.ParentColor = False
+    TabOrder = 3
+    Text = '0'
+  end
+  object OffsetExtraEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 264
+    Width = 81
+    EditLabel.Height = 13
+    EditLabel.Width = 81
+    EditLabel.Caption = 'Offset Extra '
+    EditLabel.ParentColor = False
+    TabOrder = 4
+    Text = '0'
+  end
+  object RapidSafeSpaceEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 312
+    Width = 98
+    EditLabel.Height = 13
+    EditLabel.Width = 98
+    EditLabel.Caption = 'Rapid Safety Space'
+    EditLabel.ParentColor = False
+    TabOrder = 5
+    Text = '0'
+  end
+  object ClearanceEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 360
+    Width = 121
+    EditLabel.Height = 13
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Clearance '
+    EditLabel.ParentColor = False
+    TabOrder = 6
+    Text = '0'
+  end
+  object StartDepthEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 408
+    Width = 121
+    EditLabel.Height = 13
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Start Depth'
+    EditLabel.ParentColor = False
+    TabOrder = 7
+    Text = '0'
+  end
+  object StepdownEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 456
+    Width = 121
+    EditLabel.Height = 13
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Step down'
+    EditLabel.ParentColor = False
+    TabOrder = 8
+    Text = '.001'
+  end
+  object FinalDepthEdt: TLabeledEdit
+    Left = 8
+    Height = 21
+    Top = 504
+    Width = 121
+    EditLabel.Height = 13
+    EditLabel.Width = 121
+    EditLabel.Caption = 'Final Depth'
+    EditLabel.ParentColor = False
+    TabOrder = 9
+    Text = '-.001'
+  end
+  object Panel2: TPanel
+    Left = 0
+    Height = 80
+    Top = 16
+    Width = 90
+    ClientHeight = 80
+    ClientWidth = 90
+    TabOrder = 10
+    object rbCCW: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 48
+      Width = 44
+      Caption = 'CCW'
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -11
+      Font.Name = 'Tahoma'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
+      ParentFont = False
+      TabOrder = 0
+    end
+    object rbCW: TRadioButton
+      Left = 8
+      Height = 19
+      Top = 24
+      Width = 37
+      Caption = 'CW'
+      Checked = True
+      TabOrder = 1
+      TabStop = True
+    end
+    object Label2: TLabel
+      Left = 8
+      Height = 13
+      Top = 8
+      Width = 65
+      Caption = 'Tool Direction'
+      ParentColor = False
+    end
+  end
+end
