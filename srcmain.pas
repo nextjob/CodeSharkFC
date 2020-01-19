@@ -496,6 +496,10 @@ begin
   //         ...       myForm := TMyForm.Create(Application) ;
   // Now, when you terminate (exit) the application, the "Application" object will free the "myForm" instance.
   //
+  
+  // For now do not let user resart FreeCAD we need to figure out how to reinitialize the python engine and python and freeCAD
+  MnuFCRun.Enabled := False;
+
   With TFreeCadFrm.Create(Application) Do
   Begin
 //    Try

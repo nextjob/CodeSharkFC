@@ -1135,8 +1135,7 @@ begin
     LoadObserverScript;
   Finally
     btnExeFC.Enabled := False; // do not let user select again
-    FrmMain.MnuFCRun.Enabled := False;
-    // and for now do not let user resart FreeCAD we need to figure out how to reinitialize the python engine and python and freeCAD
+
     FrmMain.Cursor := crDefault;
     if cbBypassSel.Checked then
       FrmMain.StatusBar.Panels[0].Text :=

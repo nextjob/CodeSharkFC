@@ -155,7 +155,7 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="8"/>
         <CursorPos Y="44"/>
-        <UsageCount Value="126"/>
+        <UsageCount Value="129"/>
       </Unit0>
       <Unit1>
         <Filename Value="srcmain.pas"/>
@@ -164,9 +164,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="3"/>
-        <TopLine Value="169"/>
-        <CursorPos X="70" Y="198"/>
-        <UsageCount Value="126"/>
+        <TopLine Value="185"/>
+        <CursorPos X="36" Y="508"/>
+        <UsageCount Value="129"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -186,7 +186,7 @@
         <EditorIndex Value="4"/>
         <TopLine Value="38"/>
         <CursorPos X="53" Y="54"/>
-        <UsageCount Value="68"/>
+        <UsageCount Value="71"/>
         <Loaded Value="True"/>
       </Unit3>
       <Unit4>
@@ -197,7 +197,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="3" Y="285"/>
-        <UsageCount Value="83"/>
+        <UsageCount Value="86"/>
       </Unit4>
       <Unit5>
         <Filename Value="D:\Lazarus\components\synedit\synedit.pp"/>
@@ -250,10 +250,11 @@
         <ComponentName Value="SetFCparmsFrm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
+        <IsVisibleTab Value="True"/>
         <EditorIndex Value="2"/>
-        <TopLine Value="8"/>
-        <CursorPos Y="25"/>
-        <UsageCount Value="21"/>
+        <TopLine Value="148"/>
+        <CursorPos Y="173"/>
+        <UsageCount Value="22"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit13>
@@ -262,10 +263,9 @@
         <ComponentName Value="FreeCadFrm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="536"/>
-        <CursorPos X="50" Y="564"/>
-        <UsageCount Value="26"/>
+        <TopLine Value="197"/>
+        <CursorPos Y="1138"/>
+        <UsageCount Value="27"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit14>
@@ -283,7 +283,7 @@
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="1"/>
         <CursorPos X="57" Y="23"/>
-        <UsageCount Value="13"/>
+        <UsageCount Value="14"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit16>
@@ -294,8 +294,9 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <EditorIndex Value="5"/>
-        <CursorPos X="107" Y="29"/>
-        <UsageCount Value="53"/>
+        <TopLine Value="43"/>
+        <CursorPos X="85" Y="70"/>
+        <UsageCount Value="56"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit17>
@@ -329,32 +330,32 @@
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="SetTool.pas"/>
-        <Caret Line="22" Column="57" TopLine="13"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="589" Column="3" TopLine="587"/>
       </Position1>
       <Position2>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="588" Column="3" TopLine="586"/>
+        <Caret Line="590" Column="3" TopLine="588"/>
       </Position2>
       <Position3>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="589" Column="3" TopLine="587"/>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="44" Column="15" TopLine="44"/>
       </Position3>
       <Position4>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="590" Column="3" TopLine="588"/>
+        <Filename Value="SetFCparms.pas"/>
+        <Caret Line="65" Column="3" TopLine="44"/>
       </Position4>
       <Position5>
         <Filename Value="SetFCparms.pas"/>
-        <Caret Line="44" Column="15" TopLine="44"/>
+        <Caret Line="66" Column="3" TopLine="45"/>
       </Position5>
       <Position6>
         <Filename Value="SetFCparms.pas"/>
-        <Caret Line="65" Column="3" TopLine="44"/>
+        <Caret Line="67" Column="3" TopLine="46"/>
       </Position6>
       <Position7>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="66" Column="3" TopLine="45"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="812" Column="91" TopLine="785"/>
       </Position7>
       <Position8>
         <Filename Value="SetFCparms.pas"/>
@@ -362,91 +363,91 @@
       </Position8>
       <Position9>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="812" Column="91" TopLine="785"/>
+        <Caret Line="1121" Column="13" TopLine="1104"/>
       </Position9>
       <Position10>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="67" Column="3" TopLine="46"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="1115" Column="93" TopLine="1081"/>
       </Position10>
       <Position11>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="1121" Column="13" TopLine="1104"/>
+        <Caret Line="1136" Column="3" TopLine="1080"/>
       </Position11>
       <Position12>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="1115" Column="93" TopLine="1081"/>
+        <Caret Line="106" Column="62" TopLine="101"/>
       </Position12>
       <Position13>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="1136" Column="3" TopLine="1080"/>
-      </Position13>
-      <Position14>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="106" Column="62" TopLine="101"/>
-      </Position14>
-      <Position15>
         <Filename Value="SetFCparms.pas"/>
         <Caret Line="65" TopLine="46"/>
-      </Position15>
-      <Position16>
+      </Position13>
+      <Position14>
         <Filename Value="SetFCparms.pas"/>
         <Caret Line="25" TopLine="8"/>
+      </Position14>
+      <Position15>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="457" Column="66"/>
+      </Position15>
+      <Position16>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="5" Column="49"/>
       </Position16>
       <Position17>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="457" Column="66"/>
+        <Caret Line="480" Column="22" TopLine="478"/>
       </Position17>
       <Position18>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="5" Column="49"/>
+        <Caret Line="181" Column="13" TopLine="178"/>
       </Position18>
       <Position19>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="480" Column="22" TopLine="478"/>
+        <Caret Line="438" Column="3" TopLine="422"/>
       </Position19>
       <Position20>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="181" Column="13" TopLine="178"/>
+        <Caret Line="198" Column="70" TopLine="169"/>
       </Position20>
       <Position21>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="438" Column="3" TopLine="422"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="9" Column="79"/>
       </Position21>
       <Position22>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="198" Column="70" TopLine="169"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="564" Column="39" TopLine="538"/>
       </Position22>
       <Position23>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="9" Column="79"/>
+        <Caret Line="645" Column="43" TopLine="617"/>
       </Position23>
       <Position24>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="564" Column="39" TopLine="538"/>
+        <Caret Line="648" Column="39" TopLine="620"/>
       </Position24>
       <Position25>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="645" Column="43" TopLine="617"/>
+        <Caret Line="804" Column="37" TopLine="776"/>
       </Position25>
       <Position26>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="648" Column="39" TopLine="620"/>
+        <Caret Line="1004" Column="34" TopLine="976"/>
       </Position26>
       <Position27>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="804" Column="37" TopLine="776"/>
+        <Caret Line="180" Column="21" TopLine="164"/>
       </Position27>
       <Position28>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="1004" Column="34" TopLine="976"/>
+        <Caret Line="308" Column="60" TopLine="281"/>
       </Position28>
       <Position29>
         <Filename Value="FreeCad.pas"/>
-        <Caret Line="180" Column="21" TopLine="164"/>
+        <Caret Line="564" Column="50" TopLine="536"/>
       </Position29>
       <Position30>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="308" Column="60" TopLine="281"/>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="198" Column="70" TopLine="169"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>

@@ -66,6 +66,8 @@ uses srcMain, ComonFunctions;
 Const
   // ini file section names
   PathSection = 'Paths';
+  ScriptsSection = 'Scripts';
+  WarningsSection = 'Warnings';
 
 procedure TSetFCparmsFrm.FormClose(Sender: TObject; var Action: TCloseAction);
 Begin
@@ -98,6 +100,15 @@ begin
 //
 //    FreeCadBin.Text := Inif.ReadString(PathSection, 'FreeCadBin', '');
     FreeCadMod.Text := Inif.ReadString(PathSection, 'FreeCadMod', '');
+
+    cbCustStart.Checked := Inif.ReadBool(ScriptsSection,'Custom_Start_Script',cbCustStart.Checked);
+    cbCustPanel.Checked := Inif.ReadBool(ScriptsSection,'Custom_View_Panel_Script', cbCustPanel.Checked);
+    cbCustSelectObs.Checked := Inif.ReadBool(ScriptsSection,'Custom_Selection_Observer_Script', cbCustSelectObs.Checked);
+    cbCustShutdown.Checked := Inif.ReadBool(ScriptsSection,'Custom_Shutdown_Script', cbCustShutdown.Checked);
+    cbOverWriteScript.Checked := Inif.ReadBool(ScriptsSection,'Overwrite_Custom_Scripts', cbOverWriteScript.Checked);
+
+    cbFreeCADWarnDisable.Checked := Inif.ReadBool(WarningsSection,'Disable_FreeCAD_Window_Warning', cbFreeCADWarnDisable.Checked);
+
 
   Finally
     Inif.Free;
@@ -151,6 +162,14 @@ begin
     else
       showMessage('FreeCad Mod Directory Path not set, ' + FreeCadMod.Text +
         ' not found');
+
+    Inif.WriteBool(ScriptsSection, 'Custom_Start_Script', cbCustStart.Checked);
+    Inif.WriteBool(ScriptsSection, 'Custom_View_Panel_Script',cbCustPanel.Checked);
+    Inif.WriteBool(ScriptsSection, 'Custom_Selection_Observer_Script',cbCustSelectObs.Checked);
+    Inif.WriteBool(ScriptsSection, 'Custom_Shutdown_Script',cbCustShutdown.Checked);
+    Inif.WriteBool(ScriptsSection, 'Overwrite_Custom_Scripts',cbOverWriteScript.Checked);
+
+    Inif.WriteBool(WarningsSection, 'Disable_FreeCAD_Window_Warning',cbFreeCADWarnDisable.Checked);
 
   Finally
     Inif.UpdateFile;

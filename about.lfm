@@ -2,10 +2,10 @@ object AboutFrm: TAboutFrm
   Left = 553
   Height = 476
   Top = 363
-  Width = 620
+  Width = 503
   Caption = 'About'
   ClientHeight = 476
-  ClientWidth = 620
+  ClientWidth = 503
   OnActivate = FormActivate
   Position = poOwnerFormCenter
   LCLVersion = '2.0.6.0'
