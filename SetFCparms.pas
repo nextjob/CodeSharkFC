@@ -108,7 +108,9 @@ begin
     cbOverWriteScript.Checked := Inif.ReadBool(ScriptsSection,'Overwrite_Custom_Scripts', cbOverWriteScript.Checked);
 
     cbFreeCADWarnDisable.Checked := Inif.ReadBool(WarningsSection,'Disable_FreeCAD_Window_Warning', cbFreeCADWarnDisable.Checked);
-
+    LicenseRead := Inif.ReadBool(WarningsSection,'LicenseRead', False);
+    ExtraDebugging := Inif.ReadBool(WarningsSection,'ExtraDebugging', False);
+    FormatForPathDisplay := Inif.ReadBool(WarningsSection,'FormatForPathDisplay', False);
 
   Finally
     Inif.Free;
@@ -170,6 +172,9 @@ begin
     Inif.WriteBool(ScriptsSection, 'Overwrite_Custom_Scripts',cbOverWriteScript.Checked);
 
     Inif.WriteBool(WarningsSection, 'Disable_FreeCAD_Window_Warning',cbFreeCADWarnDisable.Checked);
+    Inif.WriteBool(WarningsSection, 'LicenseRead', LicenseRead);
+    Inif.WriteBool(WarningsSection, 'ExtraDebugging',ExtraDebugging);
+    Inif.WriteBool(WarningsSection, 'FormatForPathDisplay',FormatForPathDisplay);
 
   Finally
     Inif.UpdateFile;

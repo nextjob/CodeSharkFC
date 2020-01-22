@@ -2032,9 +2032,6 @@ object frmMain: TfrmMain
         OnClick = mnyEditorSettingsClick
       end
     end
-    object mnuWindow: TMenuItem
-      Caption = 'Window'
-    end
     object MnuFreeCAD: TMenuItem
       Caption = 'FreeCAD'
       object MnuFCSettings: TMenuItem

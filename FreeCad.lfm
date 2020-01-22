@@ -15,7 +15,7 @@ object FreeCadFrm: TFreeCadFrm
   Font.Quality = fqDraft
   OnClose = FormClose
   OnCreate = FormCreate
-  Position = poMainFormCenter
+  Position = poOwnerFormCenter
   LCLVersion = '2.0.6.0'
   object Label1: TLabel
     Left = 11

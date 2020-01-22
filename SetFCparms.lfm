@@ -12,6 +12,7 @@ object SetFCparmsFrm: TSetFCparmsFrm
   Font.Name = 'Tahoma'
   OnClose = FormClose
   OnShow = FormShow
+  Position = poOwnerFormCenter
   LCLVersion = '2.0.6.0'
   object PythonHome: TLabeledEdit
     Left = 8

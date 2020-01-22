@@ -185,13 +185,14 @@ type
 
   private
     function WrtArgsToEditor(pself, args: PPyObject): PPyObject; cdecl;
-    function ParseFreeCADString(Indata: String): String;
-    procedure WrtPoint(Indata: TArray<String>);
-    procedure WrtLine(Indata: TArray<String>);
-    procedure WrtCircle(Indata: TArray<String>);
-    procedure WrtArc(Indata: TArray<String>);
+    function ParseFreeCADString(Indata: String): Boolean;
+    procedure WrtDebugInfo(Indata: Array of String);
+    procedure WrtPoint(Indata: Array of String);
+    procedure WrtLine(Indata: Array of String);
+    procedure WrtCircle(Indata: Array of String);
+    procedure WrtArc(Indata: Array of String);
     procedure WrtArvMove(GCode, PosX, PosY, PosZ, CtrX, CtrY, CtrZ: String);
-    procedure WrtUser(Id: Integer; Indata: TArray<String>);
+    procedure WrtUser(Id: Integer; Indata: Array of String);
     procedure OutPutPoint(PosX, PosY, PosZ: String);
     procedure SaveLastPoint(PosX, PosY, PosZ: String);
 
@@ -231,6 +232,7 @@ Const
   CtrX = 8;
   CtrY = 9;
   CtrZ = 10;
+  ParamSz = 10;
 
   // Define Geo values sent back by FreeCAD
   Path = 'path';
@@ -319,7 +321,7 @@ begin
   end;
 end;
 
-function TFreeCadFrm.ParseFreeCADString(Indata: String): String;
+function TFreeCadFrm.ParseFreeCADString(Indata: String): Boolean;
 // Format of Indata:
 //
 // (Geometry,Point1_X,Point1_Y,Point1_Z,Point2_X,Point2_Y,Point2_Z,Radius,Center_X,Center_Y,Center_Z)
@@ -330,30 +332,45 @@ function TFreeCadFrm.ParseFreeCADString(Indata: String): String;
 // ie:  ('line', '0.0', '0.0', '0.0', '50.0', '0.0', '0.0', '', '', '', '')
 
 Var
-  Params: TArray<String>;
-  TempStr, MyPid: String;
+//  Params: TArray<String>;
+  Params: array[0..Paramsz] of string;
+  TempStr, ParseParam,  MyPid: String;
+   i,x : integer;
 Begin
+  Result := True;
   TempStr := StringReplace(Indata, '(', '', [rfReplaceAll, rfIgnoreCase]);
   TempStr := StringReplace(TempStr, ')', '', [rfReplaceAll, rfIgnoreCase]);
   TempStr := StringReplace(TempStr, '''', '', [rfReplaceAll, rfIgnoreCase]);
   TempStr := StringReplace(TempStr, ' ', '', [rfReplaceAll, rfIgnoreCase]);
 
-  Params := TempStr.Split([',']);
+  x := 0;
+  ParseParam := '';
+  If length(TempStr) > 0 then
+    begin
+      For i := 1 to length(TempStr) do
+      Begin
+         If TempStr[i] = ',' then
+         Begin
+           Params[x] := ParseParam;
+           inc(x);
+           ParseParam := '';
+         end
+         else
+           ParseParam := ParseParam + TempStr[i];
+      end;
+      Params[x] := ParseParam;  // save last parameter
+    end
+  Else // somethng rotten here, exit with return code falses
+    Begin
+      Result := False;
+      Exit;
+    end;
 
-  { // some debugging stuff
-    MainFrm.PlusMemo1.Lines.Add('Geo: ' + Params[Geo] );
-    MainFrm.PlusMemo1.Lines.Add('X1: ' + Params[X1] );
-    MainFrm.PlusMemo1.Lines.Add('Y1: ' + Params[Y1] );
-    MainFrm.PlusMemo1.Lines.Add('Z1: ' + Params[Z1] );
-    MainFrm.PlusMemo1.Lines.Add('X2: ' + Params[X2] );
-    MainFrm.PlusMemo1.Lines.Add('Y2: ' + Params[Y2] );
-    MainFrm.PlusMemo1.Lines.Add('Z2: ' + Params[Z2] );
-    MainFrm.PlusMemo1.Lines.Add('Rad: ' + Params[Rad] );
-    MainFrm.PlusMemo1.Lines.Add('CtrX: ' + Params[CtrX] );
-    MainFrm.PlusMemo1.Lines.Add('CtrY: ' + Params[CtrY] );
-    MainFrm.PlusMemo1.Lines.Add('CtrZ: ' + Params[CtrZ] );
 
-  }
+
+//  FrmMain.SynEdit.Lines.Add(TempStr);
+//  Params := TempStr.Split([',']);
+
   if cbRawOut.Checked then
     PyOutMemo.Lines.Add(Indata);
 
@@ -389,6 +406,8 @@ Begin
   else
   // write selections to the editor memo only if cbBypassSel not checked
   begin
+    if ExtraDebugging then WrtDebugInfo(Params);
+
     if not(cbBypassSel.Checked) then
 
       if (Params[Geo] = Point) then
@@ -437,21 +456,37 @@ procedure TFreeCadFrm.OutPutPoint(PosX, PosY, PosZ: String);
 Var
   MemoLine: String;
 begin
-  MemoLine := 'X' + PosX + ' Y' + PosY;
+  if FormatForPathDisplay then
+    MemoLine := 'G1 X' + PosX + ' Y' + PosY
+  else
+    MemoLine := 'X' + PosX + ' Y' + PosY;
+
   if cbIncludeZ.Checked then
     MemoLine := MemoLine + ' Z' + PosZ;
   FrmMain.SynEdit.Lines.Add(MemoLine);
   SaveLastPoint(PosX, PosY, PosZ);
 end;
+procedure TFreeCadFrm.WrtDebugInfo(Indata: Array of String);
+Var
+  MemoLine: String;
+Begin
+    // some debugging stuff
+    FrmMain.SynEdit.Lines.Add('{Last XYZ: ' + LastX +' '+ LastY +' '+ LastZ + '}') ;
+    FrmMain.SynEdit.Lines.Add('{Geo: ' + Indata[Geo] + '}');
+    FrmMain.SynEdit.Lines.Add('{XYZ1: ' + Indata[X1] + ' ' + Indata[Y1] + ' ' + Indata[Z1] + '}');
+    FrmMain.SynEdit.Lines.Add('{XYZ2: ' + Indata[X2] + ' ' + Indata[Y2] + ' ' + Indata[Z2] + '}');
+    FrmMain.SynEdit.Lines.Add('{Rad:  ' + Indata[Rad] + ' Cntr XYZ: ' + Indata[CtrX] + ' ' + Indata[CtrY] + ' ' + Indata[CtrZ] + '}');
 
-procedure TFreeCadFrm.WrtPoint(Indata: TArray<String>);
+end;
+
+procedure TFreeCadFrm.WrtPoint(Indata: Array of String);
 // Var
 // MemoLine: String;
 begin
   OutPutPoint(Indata[X1], Indata[Y1], Indata[Z1]);
 end;
 
-procedure TFreeCadFrm.WrtLine(Indata: TArray<String>);
+procedure TFreeCadFrm.WrtLine(Indata: Array of String);
 // Var
 // MemoLine: String;
 begin
@@ -477,13 +512,18 @@ begin
 
 end;
 
-procedure TFreeCadFrm.WrtCircle(Indata: TArray<String>);
+procedure TFreeCadFrm.WrtCircle(Indata: Array of String);
+Var
+ SaveFormatForPathDisplay : boolean;
 // for circles we write out center point
 begin
+  SaveFormatForPathDisplay := FormatForPathDisplay; // for circle center point never send g code regarless of flag
+  FormatForPathDisplay := false;
   OutPutPoint(Indata[CtrX], Indata[CtrY], Indata[CtrZ]);
+  FormatForPathDisplay := SaveFormatForPathDisplay;
 end;
 
-procedure TFreeCadFrm.WrtArc(Indata: TArray<String>);
+procedure TFreeCadFrm.WrtArc(Indata: Array of String);
 //
 // WrtArc - We need to determine if arc is G2 (cw) or G3 (ccw)
 // The way we do this is assume all arcs are CCW in open cascade (OCC).
@@ -510,7 +550,7 @@ begin
     WrtArvMove('G2', Indata[X1], Indata[Y1], Indata[Z1], Indata[CtrX],
       Indata[CtrY], Indata[CtrZ])
   else
-    ShowMessage('Unable to calculate Arc Move for Indata: ');
+    ShowMessage('Unable to calculate Arc Move, Suggest Selection of End Point Elements vs Edges (Lines)');
 
 end;
 
@@ -540,7 +580,7 @@ Begin
 
 End;
 
-procedure TFreeCadFrm.WrtUser(Id: Integer; Indata: TArray<String>);
+procedure TFreeCadFrm.WrtUser(Id: Integer; Indata: Array of String);
 // user defined, for now we just add second passed parameter
 begin
   FrmMain.SynEdit.Lines.Add(Indata[X1]);

@@ -1,7 +1,7 @@
 object AboutFrm: TAboutFrm
-  Left = 553
+  Left = 689
   Height = 476
-  Top = 363
+  Top = 520
   Width = 503
   Caption = 'About'
   ClientHeight = 476

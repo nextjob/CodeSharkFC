@@ -82,7 +82,6 @@ type
     mnuStatusBar: TMenuItem;
     mnuToolbar: TMenuItem;
     mnuHelp: TMenuItem;
-    mnuWindow: TMenuItem;
     mnuSettings: TMenuItem;
     mnuView: TMenuItem;
     mnuSelectAll: TMenuItem;
@@ -178,7 +177,10 @@ type
 
 var
   frmMain: TfrmMain;
-  AboutShown : Boolean;
+  // flags set in SetFCparms, read from CodeSharkFC.ini
+  LicenseRead: Boolean;      // if set do not show about screen on startup
+  ExtraDebugging: Boolean;   // if set output extra debug info to editor window
+  FormatForPathDisplay: Boolean;      // add G1 to output (so we can send to path and evaluted with  p = Path.Path(editor lines)
 
 const
   MyAppName = 'CodeSharkFC';
@@ -435,7 +437,6 @@ begin
     CreateDir(AppDataPath);
   End;
   //ShowMessage('AppDataPath: ' + AppDataPath);
-  AboutShown := False;
 
 end;
 
@@ -461,8 +462,8 @@ end;
 
 procedure TfrmMain.FormActivate(Sender: TObject);
 begin
-  If Not(AboutShown) then AboutFrm.ShowModal;
-  AboutShown := True;
+  SetFCparmsFrm.LoadIni;
+  If Not(LicenseRead) then AboutFrm.ShowModal;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
