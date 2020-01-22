@@ -218,9 +218,11 @@ uses
   srcMain, SetFCparms, SetTool;
 
 Const
-  // Define data line sent back by FreeCAD
+  // Define data line sent back by FreeCAD  Note, Paramsz must = number of fields passed, it sizes array used to store
+  // individual fields!
 
   CrLf = #13#10;
+  // Array locations for individual passed fields
   Geo = 0;
   X1 = 1;
   Y1 = 2;
@@ -232,7 +234,7 @@ Const
   CtrX = 8;
   CtrY = 9;
   CtrZ = 10;
-  ParamSz = 10;
+  ParamSz = 10; // Constant to size array to hold fields
 
   // Define Geo values sent back by FreeCAD
   Path = 'path';
@@ -260,7 +262,6 @@ Const
   MAX_TEXT = MAX_PATH;
 var
   strText, strClass: array [0 .. MAX_TEXT] of char;
-  strPath: string;
   IsAppMainWin: Boolean;
   ProcId: cardinal;
 begin
@@ -332,7 +333,6 @@ function TFreeCadFrm.ParseFreeCADString(Indata: String): Boolean;
 // ie:  ('line', '0.0', '0.0', '0.0', '50.0', '0.0', '0.0', '', '', '', '')
 
 Var
-//  Params: TArray<String>;
   Params: array[0..Paramsz] of string;
   TempStr, ParseParam,  MyPid: String;
    i,x : integer;
@@ -354,6 +354,16 @@ Begin
            Params[x] := ParseParam;
            inc(x);
            ParseParam := '';
+
+           If x > Paramsz Then
+             Begin
+             // prevent array overflow condition, someone added fields to passed string but did not increase Paramsz constant to match
+               ShowMessage('More Fields passed than expected, Unable to complete parsing' +CRLF+ '(' + TempStr +')');
+               if ExtraDebugging then FrmMain.SynEdit.Lines.Add('(' + TempStr +')');
+               Result := False;
+               Exit;
+             end;
+
          end
          else
            ParseParam := ParseParam + TempStr[i];
@@ -467,15 +477,13 @@ begin
   SaveLastPoint(PosX, PosY, PosZ);
 end;
 procedure TFreeCadFrm.WrtDebugInfo(Indata: Array of String);
-Var
-  MemoLine: String;
 Begin
     // some debugging stuff
-    FrmMain.SynEdit.Lines.Add('{Last XYZ: ' + LastX +' '+ LastY +' '+ LastZ + '}') ;
-    FrmMain.SynEdit.Lines.Add('{Geo: ' + Indata[Geo] + '}');
-    FrmMain.SynEdit.Lines.Add('{XYZ1: ' + Indata[X1] + ' ' + Indata[Y1] + ' ' + Indata[Z1] + '}');
-    FrmMain.SynEdit.Lines.Add('{XYZ2: ' + Indata[X2] + ' ' + Indata[Y2] + ' ' + Indata[Z2] + '}');
-    FrmMain.SynEdit.Lines.Add('{Rad:  ' + Indata[Rad] + ' Cntr XYZ: ' + Indata[CtrX] + ' ' + Indata[CtrY] + ' ' + Indata[CtrZ] + '}');
+    FrmMain.SynEdit.Lines.Add('(Last XYZ: ' + LastX +' '+ LastY +' '+ LastZ + ')') ;
+    FrmMain.SynEdit.Lines.Add('(Geo: ' + Indata[Geo] + ')');
+    FrmMain.SynEdit.Lines.Add('(XYZ1: ' + Indata[X1] + ' ' + Indata[Y1] + ' ' + Indata[Z1] + ')');
+    FrmMain.SynEdit.Lines.Add('(XYZ2: ' + Indata[X2] + ' ' + Indata[Y2] + ' ' + Indata[Z2] + ')');
+    FrmMain.SynEdit.Lines.Add('(Rad:  ' + Indata[Rad] + ' Cntr XYZ: ' + Indata[CtrX] + ' ' + Indata[CtrY] + ' ' + Indata[CtrZ] + ')');
 
 end;
 
@@ -999,6 +1007,8 @@ Begin
     ScriptLns.Add('            MyX1 = MyStr(pnt[0])');
     ScriptLns.Add('            MyY1 = MyStr(pnt[1])');
     ScriptLns.Add('            MyZ1 = MyStr(pnt[2])');
+    ScriptLns.Add('        elif fnmatch.fnmatch(str(obj), ''Face*''): ');
+    ScriptLns.Add('            MyGeo = ''unknown-Object:'' + str(obj) + ''-subobject:'' + SubObject');
     ScriptLns.Add('        elif fnmatch.fnmatch(SubObject, ''Edge*''): ');
     // could be Line, Circle or Arc
     ScriptLns.Add('            try:');
@@ -1037,7 +1047,8 @@ Begin
     ScriptLns.Add('                MyEdgeList.append(sel[0].Shape.Edges[0])');
     ScriptLns.Add('        else:');
     // unknown (or un handled) type
-    ScriptLns.Add('            MyGeo = ''unknown, '' + SubObject');
+    ScriptLns.Add('            MyGeo = ''unknown: '' + SubObject');
+    ScriptLns.Add('        print( ''Object: '' + str(obj) + '' subobject: '' + SubObject)');
     ScriptLns.Add('        print( ''Geo:    '' + MyGeo)');
     ScriptLns.Add('        EdgeCnt.Value = len(MyEdgeList)');
     ScriptLns.Add
@@ -1088,7 +1099,6 @@ End;
 
 procedure TFreeCadFrm.LoadShutdownScript;
 var
-  i: Integer;
   scriptFn: String;
 
 Begin
@@ -1196,7 +1206,6 @@ procedure TFreeCadFrm.PythonEngine1BeforeLoad(Sender: TObject);
 // Get startup info (file locations, ext) from our calling program
 //
 Var
-  MyResult: Integer;
   MyPyDllPath: String;
 
 begin
