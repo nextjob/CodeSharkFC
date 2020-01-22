@@ -1171,11 +1171,10 @@ begin
   End;
   //
   // Note (or warn) for QT bug, "/platforms" directory must be local to codeshark exe, look for it
+  //  01/22/2020 this looks like it has been fixed, do not warn
+  //if not DirectoryExists(ExtractFilePath(ParamStr(0)) + '\platforms') then
+  //  ShowMessage ('Warning ... Due to QT5 issue, "platforms" directory must be copied from FreeCad ../bin/platforms to directory containing CodeSharkFC exe file, it was not found.');
   //
-  if not DirectoryExists(ExtractFilePath(ParamStr(0)) + '\platforms') then
-    ShowMessage
-      ('Warning ... Due to QT5 issue, "platforms" directory must be copied from FreeCad ../bin/platforms to directory containing CodeSharkFC exe file, it was not found.');
-
   FrmMain.Cursor := crHourGlass;
   FrmMain.StatusBar.Panels[0].Text := 'Script Statup';
   FrmMain.Refresh;

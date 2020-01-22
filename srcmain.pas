@@ -179,6 +179,7 @@ var
   frmMain: TfrmMain;
   // flags set in SetFCparms, read from CodeSharkFC.ini
   LicenseRead: Boolean;      // if set do not show about screen on startup
+  LicenseShown : Boolean;    // have we shown the license (about) at startup?
   ExtraDebugging: Boolean;   // if set output extra debug info to editor window
   FormatForPathDisplay: Boolean;      // add G1 to output (so we can send to path and evaluted with  p = Path.Path(editor lines)
 
@@ -437,7 +438,7 @@ begin
     CreateDir(AppDataPath);
   End;
   //ShowMessage('AppDataPath: ' + AppDataPath);
-
+  LicenseShown := False;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -463,7 +464,9 @@ end;
 procedure TfrmMain.FormActivate(Sender: TObject);
 begin
   SetFCparmsFrm.LoadIni;
-  If Not(LicenseRead) then AboutFrm.ShowModal;
+  if Not(LicenseShown) then
+    If Not(LicenseRead) then AboutFrm.ShowModal;
+  LicenseShown := True;
 end;
 
 procedure TfrmMain.FormShow(Sender: TObject);
