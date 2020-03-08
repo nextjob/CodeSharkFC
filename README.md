@@ -28,18 +28,7 @@ __Note:__ The sample application was created with the Lazarus IDE and complied w
 Install the `python4delphi` package into the Lazarus IDE see: https://wiki.freepascal.org/Install_Packages
 
 ## Installation
-* Select the Python version to be used in `python4delphi` by editing:  
-`..\python4delphi-master\PythonForDelphi\Components\Sources\Core\Definition.Inc` 
-
-```pascal       
-//{$DEFINE PYTHON35}
- 
-{$DEFINE PYTHON36}
-
-//{$DEFINE PYTHON37}
-
-```
-      
+    
 * With Lazarus IDE, open the Lazarus project information file for CodeSharkFC (`./CodeSharkFC.lpi`)
 * Build the application
 
