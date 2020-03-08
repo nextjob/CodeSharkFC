@@ -25,7 +25,7 @@ interface
 
 uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
-  Dialogs, ExtCtrls, StdCtrls, Inifiles;
+  Dialogs, ExtCtrls, StdCtrls,PythonEngine, Inifiles;
 
 type
 
@@ -34,6 +34,9 @@ type
   TSetFCparmsFrm = class(TForm)
     cbOverWriteScript: TCheckBox;
     cbFreeCADWarnDisable: TCheckBox;
+    cbPyVersions: TComboBox;
+    Label2: TLabel;
+    PyDllName: TEdit;
     Label1: TLabel;
     PythonHome: TLabeledEdit;
     FreeCadMod: TLabeledEdit;
@@ -41,6 +44,8 @@ type
     cbCustPanel: TCheckBox;
     cbCustSelectObs: TCheckBox;
     cbCustShutdown: TCheckBox;
+    procedure cbPyVersionsSelect(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure PythonHomeClick(Sender: TObject);
     procedure FreeCadModClick(Sender: TObject);
@@ -55,7 +60,7 @@ type
 
 var
   SetFCparmsFrm: TSetFCparmsFrm;
-
+  PyRegVersion : string;
 
 implementation
 
@@ -82,6 +87,23 @@ begin
   LoadIni;
 end;
 
+procedure TSetFCparmsFrm.cbPyVersionsSelect(Sender: TObject);
+begin
+ // cbPyVersions.ItemIndex index to selected python verstion
+  PyDllName.Text := PYTHON_KNOWN_VERSIONS[cbPyVersions.ItemIndex+1].DllName;
+  PyRegVersion := PYTHON_KNOWN_VERSIONS[cbPyVersions.ItemIndex+1].RegVersion;
+end;
+
+procedure TSetFCparmsFrm.FormCreate(Sender: TObject);
+var
+  PyEngineVersion : TPythonVersionProp;
+// create a dropdown list of python versions currently defined in Pythom4delphi engine
+
+begin
+   for PyEngineVersion in PYTHON_KNOWN_VERSIONS do
+    cbPyVersions.Items.Add(PyEngineVersion.DllName);
+end;
+
 
 procedure TSetFCparmsFrm.LoadIni;
 
@@ -95,8 +117,8 @@ begin
     Inif := TMemIniFile.Create(FrmMain.AppDataPath + '\' + MyAppName + '.ini');
     PythonHome.Text := Inif.ReadString(PathSection, 'PythonHome', '');
 //    PyDllPath.Text := Inif.ReadString(PathSection, 'PythonDllPath', '');
-//    PyDllName.Text := Inif.ReadString(PathSection, 'PythonDllName', '');
-//    RegVersion.Text := Inif.ReadString(PathSection, 'RegVersion', '');
+    PyDllName.Text := Inif.ReadString(PathSection, 'PythonDllName', '');
+    PyRegVersion := Inif.ReadString(PathSection, 'RegVersion', '');
 //
 //    FreeCadBin.Text := Inif.ReadString(PathSection, 'FreeCadBin', '');
     FreeCadMod.Text := Inif.ReadString(PathSection, 'FreeCadMod', '');
@@ -137,19 +159,19 @@ begin
       Inif.WriteString(PathSection, 'PythonDllPath', PyDllPath.Text)
     else
       showMessage('Python Dll Path not set, ' + PyDllPath.Text + ' not found');
-
+  }
     if (Length(PyDllName.Text) > 0) and
-      (FileExists(PyDllPath.Text + '\' + PyDllName.Text)) then
+      (FileExists(PythonHome.Text + '\' + PyDllName.Text)) then
       Inif.WriteString(PathSection, 'PythonDllName', PyDllName.Text)
     else
-      showMessage('Python Dll Name not set, ' + PyDllPath.Text + '\' +
-        PyDllName.Text + ' not found');
+      showMessage('Python Dll Name not set, ' + PythonHome.Text + '\' +
+      PyDllName.Text + ' not found');
 
-    if (Length(RegVersion.Text) > 0) then
-      Inif.WriteString(PathSection, 'RegVersion', RegVersion.Text)
+    if (Length(PyRegVersion) > 0) then
+      Inif.WriteString(PathSection, 'RegVersion', PyRegVersion)
     else
       showMessage('Python Registered Version not set');
-
+    {
     if (Length(FreeCadBin.Text) > 0) and (TDirectory.Exists(FreeCadBin.Text))
     then
       Inif.WriteString(PathSection, 'FreeCadBin', FreeCadBin.Text)

@@ -268,15 +268,15 @@ object FreeCadFrm: TFreeCadFrm
     TabOrder = 3
   end
   object PythonEngine1: TPythonEngine
+    AutoLoad = False
     DllName = 'python36.dll'
     APIVersion = 1013
     RegVersion = '3.6'
     FatalAbort = False
     FatalMsgDlg = False
     UseLastKnownVersion = False
-    OnBeforeLoad = PythonEngine1BeforeLoad
     AutoFinalize = False
-    IO = PythonInputOutput1
+    IO = PythonGUIInputOutput1
     PyFlags = [pfIgnoreEnvironmentFlag]
     left = 37
     top = 213
@@ -287,19 +287,20 @@ object FreeCadFrm: TFreeCadFrm
     ModuleName = 'CaptureFC'
     Errors = <>
     left = 168
-    top = 325
-  end
-  object PythonInputOutput1: TPythonInputOutput
-    UnicodeIO = False
-    RawOutput = False
-    left = 56
-    top = 325
+    top = 320
   end
   object PythonDelphiVar1: TPythonDelphiVar
     Engine = PythonEngine1
     Module = '__main__'
     VarName = 'EdgeCnt'
     left = 272
+    top = 320
+  end
+  object PythonGUIInputOutput1: TPythonGUIInputOutput
+    UnicodeIO = False
+    RawOutput = False
+    Output = PyOutMemo
+    left = 48
     top = 320
   end
 end
