@@ -20,7 +20,7 @@ See the FreeCAD forum post: https://forum.freecadweb.org/viewtopic.php?f=22&t=42
 ## Prerequisites
 __Note:__ The sample application was created with the Lazarus IDE and complied with Free Pascal, a Delphi port is available [Here](https://github.com/nextjob/CodeSharkFCs).
 
-* Windows operating System
+* Windows & Linux operating System
 * Latest FreeCAD [v0.19pre](https://github.com/FreeCAD/FreeCAD/releases)
 * [Lazarus IDE](https://www.lazarus-ide.org/)
 * [python4delphi](https://github.com/pyscripter/python4delphi) 
