@@ -1,7 +1,7 @@
 object frmMain: TfrmMain
-  Left = 558
+  Left = 2804
   Height = 577
-  Top = 476
+  Top = 531
   Width = 753
   HorzScrollBar.Page = 532
   VertScrollBar.Page = 311
@@ -42,7 +42,7 @@ object frmMain: TfrmMain
   end
   object AutoCompleteBox: TComboBox
     Left = 236
-    Height = 21
+    Height = 27
     Top = 58
     Width = 172
     AutoComplete = True

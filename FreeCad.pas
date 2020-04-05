@@ -1,7 +1,5 @@
 { This file is part of CodeSharkFCs
 
-  Copyright (C) 2020 Nextjob Solutions, LLC.
-
   This source is free software; you can redistribute it and/or modify it under
   the terms of the GNU General Public License as published by the Free
   Software Foundation; either version 2 of the License, or (at your option)
@@ -33,10 +31,10 @@ unit FreeCad;
 // To Fix:
 //
 // The selection observer script is very simple.
-// It assumes it is dealing with edges or points. 
-//  At this time is does not work well with Faces. 
-//  look at ..\FreeCadNotes\ListSelectedObjects.py on how to parse thru all components of an object
-//  (find the componentv via name? or label? then output its geometry?)
+// It assumes it is dealing with edges or points.
+// At this time is does not work well with Faces.
+// look at ..\FreeCadNotes\ListSelectedObjects.py on how to parse thru all components of an object
+// (find the componentv via name? or label? then output its geometry?)
 //
 // Floating point division by zero when first run import (python 3.6)
 // add MaskFPUExceptions(True);
@@ -47,11 +45,11 @@ unit FreeCad;
 // set PythonEngine1.SetPythonHome to PythonHome  in PythonEngine1BeforeLoad
 //
 // Error - could not load a Python engine
-// FreeCAD does not ?always? load all the required Python files for python4delphi to interface properly.  
+// FreeCAD does not ?always? load all the required Python files for python4delphi to interface properly.
 // Installing python from python.org (currently version Python 3.6.6). Fixes this issue.
 //
-// Error - This application failed to start because it could not find or load the Qt platform plugin "windows" 
-// Problem with QT5 looking for ..\platforms\ in the directory of the executable (in this case CodeSharkFC.exe).  
+// Error - This application failed to start because it could not find or load the Qt platform plugin "windows"
+// Problem with QT5 looking for ..\platforms\ in the directory of the executable (in this case CodeSharkFC.exe).
 // You should be able to set environment variables to point to ..\FreeCAD19\bin\platforms but I have not had any luck with this.
 // Work around is to copy contents of ..\FreeCAD19\bin\platforms to ..\CodeSharkFC\platforms
 
@@ -127,9 +125,14 @@ interface
 
 uses
 {$IFDEF FPC}
-  Windows, JwaPsApi, Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
+ {$IFDEF MSWINDOWS}
+  Windows, //JwaPsApi, JwaTlHelp32,
+ {$ELSE}
+  Process,
+ {$ENDIF}
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics,
   ComCtrls,
-  Dialogs, ExtCtrls, StdCtrls, PythonEngine, PythonGUIInputOutput, JwaTlHelp32;
+  Dialogs, ExtCtrls, StdCtrls, PythonEngine, PythonGUIInputOutput;
 {$ELSE}
   Windows, PsAPI, System.SysUtils, System.Variants, System.Classes,
   Vcl.Graphics,
@@ -144,8 +147,10 @@ type
   { TFreeCadFrm }
 
   TFreeCadFrm = class(TForm)
+{$IFDEF FPC}
     Label5: TLabel;
     Label6: TLabel;
+{$ENDIF}
     PythonEngine1: TPythonEngine;
     ExeMemo: TMemo;
     PyOutMemo: TMemo;
@@ -172,17 +177,18 @@ type
     procedure btnExeFCClick(Sender: TObject);
     procedure PythonModule1Initialization(Sender: TObject);
     procedure LoadStartupScript;
+    procedure LoadWindowScript;
     procedure LoadPanelViewScript;
     procedure LoadObserverScript;
-    procedure LoadShutdownScript;
+    procedure LoadWindowActionScript(Action : Integer);
     procedure FormClose(Sender: TObject; var Action: TCloseAction);
     procedure FormCreate(Sender: TObject);
     procedure btnGenPathClick(Sender: TObject);
     procedure btnSetToolClick(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormShow(Sender: TObject);
 
   private
-    function WrtArgsToEditor(pself, args: PPyObject): PPyObject; cdecl;
-    function ParseFreeCADString(Indata: String): Boolean;
     procedure WrtDebugInfo(Indata: Array of String);
     procedure WrtPoint(Indata: Array of String);
     procedure WrtLine(Indata: Array of String);
@@ -199,6 +205,9 @@ type
   public
     { Public declarations }
   end;
+
+  function WrtArgsToEditor(self, args: PPyObject): PPyObject; cdecl;
+  function ParseFreeCADString(Indata: String): Boolean;
 
 var
   FreeCadFrm: TFreeCadFrm;
@@ -244,82 +253,48 @@ Const
   User3 = 'user3';
   OtherData = 'otherdata';
   Unknown = 'unknown';
+  // custom script files found in AppData (C:\Users\**username**\AppData\Local\CodeSharkFC)
+  StartupScript = 'StartupScript.py';
+  PanelViewScript = 'PanelViewScript.py';
+  ObserverScript = 'ObserverScript.py';
+  WindowCloseScript = 'WindowCloseScript.py';
+  WindowHideScript = 'WindowHideScript.py';
+  WindowShowScript = 'WindowShowScript.py';
   //
-  FreeCADScreenName = 'FreeCAD(CSFC)';
+  cFreeCADScreenName = 'FreeCAD(CSFC'; //Name we will assign to FreeCAD window in LoadWindowScript
+  // LoadWindowActionScript actions
+  WindowShow = 0;
+  WindowHide = 1;
+  WindowClose = 2;
 
 var
-  StarupLoaded, PanelViewLoaded, ObserverLoaded: Boolean;
+  StartupLoaded, PanelViewLoaded, ObserverLoaded: Boolean;
   ScriptLns: TStringList;
   LastX, LastY, LastZ: String; // last point processed
   FreeCADPid: Integer; // PID of FreeCAD process, returned by  startup script
-  FreeCADFound: Boolean;
+  FreeCADScreenName : String;  //Name we will assign to FreeCAD window in LoadWindowScript
+  FreeCADFound: Boolean;       // Our FreeCAD Screen Name Found with FindFreeCADWindow
 
-function EnumWinProc(wHandle: hWnd; lparam: Integer): Bool; stdcall;
-Const
-  MAX_TEXT = MAX_PATH;
-var
-  strText, strClass: array [0 .. MAX_TEXT] of char;
-  IsAppMainWin: Boolean;
-  ProcId: cardinal;
-begin
-  // Check if the window is a visible application main window.
-  IsAppMainWin := IsWindowVisible(wHandle) AND // Visible
-    (GetWindow(wHandle, GW_OWNER) = 0) AND // Not owned by other windows
-    (GetParent(wHandle) = 0) AND // Does not have any parent
-    (GetWindowLong(wHandle, GWL_EXSTYLE) AND WS_EX_TOOLWINDOW = 0);
-  // Not a tool window
 
-  if IsAppMainWin then
-  begin
 
-    GetWindowText(wHandle, strText, MAX_TEXT);
-    GetClassName(wHandle, strClass, MAX_TEXT);
-
-    GetWindowThreadProcessID(wHandle, ProcId);
-
-    if (FreeCADPid > 0) and (FreeCADPid = ProcId) then
-      if strText = FreeCADScreenName then
-        FreeCADFound := True;
-  end;
-
-  Result := True;
-end;
-
-procedure DoEnumWindows;
-var
-  FirstWnd: cardinal;
-begin
-  EnumWindows(@EnumWinProc, cardinal(@FirstWnd));
-end;
-
-function SetEnvVarValue(const VarName, VarValue: string): Integer;
-begin
-  // Simply call API function
-  if Windows.SetEnvironmentVariable(PChar(VarName), PChar(VarValue)) then
-    Result := 0
-  else
-    Result := GetLastError;
-end;
-
-function EnsurePathHasDoubleSlashes(Path: string): string;
-begin
-  Result := StringReplace(Path, '\', '\\', [rfReplaceAll, rfIgnoreCase]);
-  Result := StringReplace(Result, '\\\', '\\', [rfReplaceAll, rfIgnoreCase]);
-end;
-
-function TFreeCadFrm.WrtArgsToEditor(pself, args: PPyObject): PPyObject; cdecl;
+function WrtArgsToEditor(self, args: PPyObject): PPyObject; cdecl;
 // define the function we will use in the python scripts to get the data into the codeshark programing window
+// NOTE*** There is something stange with referenceing objects on FreeCad dialog in the functions that will
+// be called via python.  Using the local hamespace ie FreeCadFrm.lblEdgeCnt.Caption or  FreeCADFrm.PyOutMemo.Lines.Add('xyz')
+// results in an access viloation.  I suspect this is because  FreeCADFrm is dynamically created in srcMain.
+// However, if we reference it from the creator (scrMain  ie srcMain.MyFreeCADFrm.lblEdgeCnt.Caption ) we can get this to work
 // lots more work to do here, lets just get the basics to work for now
 begin
   with GetPythonEngine do
   begin
-    lblEdgeCnt.Caption := PythonDelphiVar1.ValueAsString;
-    ParseFreeCADString(PyObjectAsString(args));
+      srcMain.MyFreeCADFrm.lblEdgeCnt.Caption := srcMain.MyFreeCADFrm.PythonDelphiVar1.ValueAsString;
+      ParseFreeCADString(PyObjectAsString(args));
+//      FrmMain.Synedit.Lines.Add(PyObjectAsString(args));
     Result := ReturnNone;
   end;
 end;
 
-function TFreeCadFrm.ParseFreeCADString(Indata: String): Boolean;
+function ParseFreeCADString(Indata: String): Boolean;
 // Format of Indata:
 //
 // (Geometry,Point1_X,Point1_Y,Point1_Z,Point2_X,Point2_Y,Point2_Z,Radius,Center_X,Center_Y,Center_Z)
@@ -330,9 +305,9 @@ function TFreeCadFrm.ParseFreeCADString(Indata: String): Boolean;
 // ie:  ('line', '0.0', '0.0', '0.0', '50.0', '0.0', '0.0', '', '', '', '')
 
 Var
-  Params: array[0..Paramsz] of string;
-  TempStr, ParseParam,  MyPid: String;
-   i,x : integer;
+  Params: array [0 .. ParamSz] of string;
+  TempStr, ParseParam, MyPid: String;
+  i, x: Integer;
 Begin
   Result := True;
   TempStr := StringReplace(Indata, '(', '', [rfReplaceAll, rfIgnoreCase]);
@@ -343,43 +318,46 @@ Begin
   x := 0;
   ParseParam := '';
   If length(TempStr) > 0 then
-    begin
-      For i := 1 to length(TempStr) do
-      Begin
-         If TempStr[i] = ',' then
-         Begin
-           Params[x] := ParseParam;
-           inc(x);
-           ParseParam := '';
-
-           If x > Paramsz Then
-             Begin
-             // prevent array overflow condition, someone added fields to passed string but did not increase Paramsz constant to match
-               ShowMessage('More Fields passed than expected, Unable to complete parsing' +CRLF+ '(' + TempStr +')');
-               if ExtraDebugging then FrmMain.SynEdit.Lines.Add('(' + TempStr +')');
-               Result := False;
-               Exit;
-             end;
-
-         end
-         else
-           ParseParam := ParseParam + TempStr[i];
-      end;
-      Params[x] := ParseParam;  // save last parameter
-    end
-  Else // somethng rotten here, exit with return code falses
+  begin
+    For i := 1 to length(TempStr) do
     Begin
-      Result := False;
-      Exit;
+      If TempStr[i] = ',' then
+      Begin
+        Params[x] := ParseParam;
+        inc(x);
+        ParseParam := '';
+
+        If x > ParamSz Then
+        Begin
+          // prevent array overflow condition, someone added fields to passed string but did not increase Paramsz constant to match
+          ShowMessage
+            ('More Fields passed than expected, Unable to complete parsing' +
+            CrLf + '(' + TempStr + ')');
+          if SetFCparms.ExtraDebugging then
+            FrmMain.SynEdit.Lines.Add('(' + TempStr + ')');
+          Result := False;
+          Exit;
+        end;
+
+      end
+      else
+        ParseParam := ParseParam + TempStr[i];
     end;
+    Params[x] := ParseParam; // save last parameter
+  end
+  Else // somethng rotten here, exit with return code falses
+  Begin
+    Result := False;
+    Exit;
+  end;
 
 
 
-//  FrmMain.SynEdit.Lines.Add(TempStr);
-//  Params := TempStr.Split([',']);
+  // FrmMain.SynEdit.Lines.Add(TempStr);
+  // Params := TempStr.Split([',']);
 
-  if cbRawOut.Checked then
-    PyOutMemo.Lines.Add(Indata);
+   if srcMain.MyFreeCADFrm.cbRawOut.Checked then
+      srcMain.MyFreeCADFrm.PyOutMemo.Lines.Add(Indata);
 
   if Params[Geo] = OtherData then
   //
@@ -389,7 +367,7 @@ Begin
     Begin
       // we have FreeCAD windows PID, save for shutdown testing
       MyPid := Params[Y1];
-      PyOutMemo.Lines.Add('FreeCAD PID = :' + MyPid + ':');
+      srcMain.MyFreeCADFrm.PyOutMemo.Lines.Add('FreeCAD PID = :' + MyPid + ':');
       Try
         FreeCADPid := StrToInt(MyPid)
       Except
@@ -398,7 +376,7 @@ Begin
 
     End
     else
-      PyOutMemo.Lines.Add('Unknow Other Data Passed: ' + Indata);
+      srcMain.MyFreeCADFrm.PyOutMemo.Lines.Add('Unknow Other Data Passed: ' + Indata);
   end
 
   else if Params[Geo] = Path then
@@ -413,36 +391,129 @@ Begin
   else
   // write selections to the editor memo only if cbBypassSel not checked
   begin
-    if ExtraDebugging then WrtDebugInfo(Params);
+    if ExtraDebugging then
+      FreeCADFrm.WrtDebugInfo(Params);
 
-    if not(cbBypassSel.Checked) then
+    if not(srcMain.MyFreeCADFrm.cbBypassSel.Checked) then
 
       if (Params[Geo] = Point) then
         // point type
-        WrtPoint(Params)
+        FreeCADFrm.WrtPoint(Params)
       else if (Params[Geo] = Line) then
         // line type
-        WrtLine(Params)
+        FreeCADFrm.WrtLine(Params)
       else if (Params[Geo] = Circle) then
         // circle type
-        WrtCircle(Params)
+        FreeCADFrm.WrtCircle(Params)
       else if (Params[Geo] = Arc) then
         // arc type
-        WrtArc(Params)
+        FreeCADFrm.WrtArc(Params)
       else if Params[Geo] = User1 then
         // User1
-        WrtUser(1, Params)
+        FreeCADFrm.WrtUser(1, Params)
       else if Params[Geo] = User2 then
         // User2
-        WrtUser(2, Params)
+        FreeCADFrm.WrtUser(2, Params)
       else if Params[Geo] = User3 then
         // User3
-        WrtUser(3, Params)
+        FreeCADFrm.WrtUser(3, Params)
       else
-        PyOutMemo.Lines.Add('Unknow Data Passed: ' + Indata);
+        srcMain.MyFreeCADFrm.PyOutMemo.Lines.Add('Unknow Data Passed: ' + Indata);
   end;
 
 End;
+
+ //
+ // following is how we determine if the FreeCAD Window Name (we assigned in PanelViewScript.py) is still active
+ // we need to have a linux and windows version of this code
+ // so here it is
+ // Note in both versions of FindFreeCADWindow we shamelessly use ths global variables:
+ //   FreeCADScreenName  Name we will assign to FreeCAD window in LoadWindowScript
+ //   FreeCADFound  Our FreeCAD Screen Name Found T/F
+ //
+{$IFDEF LINUX}
+procedure FindFreeCADWindow;
+ var
+    AProcess: TProcess;
+    List : TStringList = nil;
+    Result : Boolean;
+    i :integer;
+begin
+    Result := False;
+    FreeCADFound := False;
+    // use wmctrl to get a list of all windows
+    AProcess := TProcess.Create(nil);
+    AProcess.Executable:= 'wmctrl';
+    AProcess.Parameters.Add('-l');
+    AProcess.Options := AProcess.Options + [poWaitOnExit, poUsePipes];
+    try
+        AProcess.Execute;
+        Result := (AProcess.ExitStatus = 0);        // says at least one packet got back
+    except on
+        E: EProcess do Showmessage('Process execution failed: ' + E.Message );
+    end;
+    if Result then
+    Begin
+      List := TStringList.Create;
+      List.LoadFromStream(AProcess.Output);       // Get the output from wmcttl
+      for i := 0 to List.Count-1 do               // look for the our FreeCAD window
+        if Pos(FreeCADScreenName, List[i]) > 0 then
+        Begin
+          FreeCADFound := True;
+          Exit;
+        End;
+      List.Free;
+      AProcess.Free;
+    End
+    Else
+      Showmessage('wmctrl returned no windows');
+
+end;
+{$ELSE}
+function EnumWinProc(wHandle: hWnd; lparam: Integer): Bool; stdcall;
+Const
+  MAX_TEXT = MAX_PATH;
+var
+  strText, strClass: array [0 .. MAX_TEXT] of char;
+  IsAppMainWin: Boolean;
+  ProcId: cardinal;
+begin
+  // Check if the window is a application main window.
+
+  IsAppMainWin :=
+    (GetWindow(wHandle, GW_OWNER) = 0) AND // Not owned by other windows
+    (GetParent(wHandle) = 0) AND // Does not have any parent
+    (GetWindowLong(wHandle, GWL_EXSTYLE) AND WS_EX_TOOLWINDOW = 0);  // Not a tool window
+
+
+
+  if IsAppMainWin then
+  begin
+    GetWindowText(wHandle, strText, MAX_TEXT);
+//    GetClassName(wHandle, strClass, MAX_TEXT);
+//    GetWindowThreadProcessID(wHandle, ProcId);
+    if strText = FreeCADScreenName then
+      FreeCADFound := True;
+  end;
+
+  Result := True;
+end;
+
+procedure FindFreeCADWindow;
+var
+  FirstWnd: cardinal;
+begin
+  FreeCADFound := False;
+  EnumWindows(@EnumWinProc, LPARAM(@FirstWnd));
+end;
+
+{$ENDIF}
+
+function EnsurePathHasDoubleSlashes(Path: string): string;
+begin
+  Result := StringReplace(Path, '\', '\\', [rfReplaceAll, rfIgnoreCase]);
+  Result := StringReplace(Result, '\\\', '\\', [rfReplaceAll, rfIgnoreCase]);
+end;
 
 function TFreeCadFrm.IsSamePoint(PosX, PosY, PosZ: String): Boolean;
 Begin
@@ -463,24 +534,29 @@ procedure TFreeCadFrm.OutPutPoint(PosX, PosY, PosZ: String);
 Var
   MemoLine: String;
 begin
-  if FormatForPathDisplay then
+  if SetFCparms.FormatForPathDisplay then
     MemoLine := 'G1 X' + PosX + ' Y' + PosY
   else
     MemoLine := 'X' + PosX + ' Y' + PosY;
 
-  if cbIncludeZ.Checked then
+  if srcMain.MyFreeCADFrm.cbIncludeZ.Checked then
     MemoLine := MemoLine + ' Z' + PosZ;
   FrmMain.SynEdit.Lines.Add(MemoLine);
   SaveLastPoint(PosX, PosY, PosZ);
 end;
+
 procedure TFreeCadFrm.WrtDebugInfo(Indata: Array of String);
 Begin
-    // some debugging stuff
-    FrmMain.SynEdit.Lines.Add('(Last XYZ: ' + LastX +' '+ LastY +' '+ LastZ + ')') ;
-    FrmMain.SynEdit.Lines.Add('(Geo: ' + Indata[Geo] + ')');
-    FrmMain.SynEdit.Lines.Add('(XYZ1: ' + Indata[X1] + ' ' + Indata[Y1] + ' ' + Indata[Z1] + ')');
-    FrmMain.SynEdit.Lines.Add('(XYZ2: ' + Indata[X2] + ' ' + Indata[Y2] + ' ' + Indata[Z2] + ')');
-    FrmMain.SynEdit.Lines.Add('(Rad:  ' + Indata[Rad] + ' Cntr XYZ: ' + Indata[CtrX] + ' ' + Indata[CtrY] + ' ' + Indata[CtrZ] + ')');
+  // some debugging stuff
+  FrmMain.SynEdit.Lines.Add('(Last XYZ: ' + LastX + ' ' + LastY + ' ' +
+    LastZ + ')');
+  FrmMain.SynEdit.Lines.Add('(Geo: ' + Indata[Geo] + ')');
+  FrmMain.SynEdit.Lines.Add('(XYZ1: ' + Indata[X1] + ' ' + Indata[Y1] + ' ' +
+    Indata[Z1] + ')');
+  FrmMain.SynEdit.Lines.Add('(XYZ2: ' + Indata[X2] + ' ' + Indata[Y2] + ' ' +
+    Indata[Z2] + ')');
+  FrmMain.SynEdit.Lines.Add('(Rad:  ' + Indata[Rad] + ' Cntr XYZ: ' +
+    Indata[CtrX] + ' ' + Indata[CtrY] + ' ' + Indata[CtrZ] + ')');
 
 end;
 
@@ -495,7 +571,7 @@ procedure TFreeCadFrm.WrtLine(Indata: Array of String);
 // Var
 // MemoLine: String;
 begin
-  if Length(LastX) > 0 then // Have we output at least one point?
+  if length(LastX) > 0 then // Have we output at least one point?
     // Yes, is it the same as the start of this line?
     // if so only output ending point
     if IsSamePoint(Indata[X1], Indata[Y1], Indata[Z1]) then
@@ -519,11 +595,12 @@ end;
 
 procedure TFreeCadFrm.WrtCircle(Indata: Array of String);
 Var
- SaveFormatForPathDisplay : boolean;
-// for circles we write out center point
+  SaveFormatForPathDisplay: Boolean;
+  // for circles we write out center point
 begin
-  SaveFormatForPathDisplay := FormatForPathDisplay; // for circle center point never send g code regarless of flag
-  FormatForPathDisplay := false;
+  SaveFormatForPathDisplay := FormatForPathDisplay;
+  // for circle center point never send g code regarless of flag
+  FormatForPathDisplay := False;
   OutPutPoint(Indata[CtrX], Indata[CtrY], Indata[CtrZ]);
   FormatForPathDisplay := SaveFormatForPathDisplay;
 end;
@@ -537,7 +614,7 @@ procedure TFreeCadFrm.WrtArc(Indata: Array of String);
 // NOTE we are assuming XY Plane (G17) !!!!!
 
 begin
-  if Length(LastX) > 0 then // Have we output at least one point?
+  if length(LastX) > 0 then // Have we output at least one point?
   else
   begin
     // started on arc, can only assume CCW
@@ -555,7 +632,8 @@ begin
     WrtArvMove('G2', Indata[X1], Indata[Y1], Indata[Z1], Indata[CtrX],
       Indata[CtrY], Indata[CtrZ])
   else
-    ShowMessage('Unable to calculate Arc Move, Suggest Selection of End Point Elements vs Edges (Lines)');
+    ShowMessage
+      ('Unable to calculate Arc Move, Suggest Selection of End Point Elements vs Edges (Lines)');
 
 end;
 
@@ -613,7 +691,7 @@ begin
 
   with Sender as TPythonModule do
   begin
-    AddDelphiMethod('WrtArgs', WrtArgsToEditor,
+    AddMethod('WrtArgs', WrtArgsToEditor,
       'Function writes args to CodeShark Editor');
   end;
 end;
@@ -635,7 +713,7 @@ begin
   Begin
     MsgText := 'Not Enough Edges Selected (>1), Path generation not possible';
     MessageDlg(MsgText, mtWarning, [mbOK], 0);
-    exit
+    Exit
   End;
 
   ScriptLns.Clear;
@@ -643,7 +721,7 @@ begin
   ScriptLns.Add('print(''Edges: '' + str(len(MyEdgeList)))');
   PyOutMemo.Lines.Add('Execute script to get the edge list');
   if not(ExeScript(ScriptLns)) then
-    exit;
+    Exit;
 
   // create MyCurve
   ScriptLns.Clear;
@@ -659,7 +737,7 @@ begin
   PyOutMemo.Lines.Add('Execute script to create MyCurve');
   PyOutMemo.Lines.Add(PathKurveStr);
   if not(ExeScript(ScriptLns)) then
-    exit;
+    Exit;
 
   // create the  PathKurveUtils.profile function  call
   //
@@ -686,7 +764,7 @@ begin
   PyOutMemo.Lines.Add('Execute script PathKurveUtils.profile function  call');
   PyOutMemo.Lines.Add(PathKurveStr);
   if not(ExeScript(ScriptLns)) then
-    exit;
+    Exit;
 
   // send the gcode to the editor
   //
@@ -701,7 +779,7 @@ begin
     ''','' error generating G-Code'','''','''','''','''','''','''','''','''','''')');
   PyOutMemo.Lines.Add('Execute script Retrieve goutput ');
   if not(ExeScript(ScriptLns)) then
-    exit;
+    Exit;
 
   // finally show the path
   //
@@ -753,29 +831,9 @@ procedure TFreeCadFrm.FormClose(Sender: TObject; var Action: TCloseAction);
 Var
   MsgText: String;
 begin
-  // see if we still have a FreeCAD window (user did not close)
-  DoEnumWindows;
-  if StarupLoaded and FreeCADFound then
-  Begin
-    LoadShutdownScript;
-    PythonEngine1.Finalize;
-  End
-  else
-  //
-  Begin
-    MsgText := 'The ' + FreeCADScreenName + ' Window Cannot Be Found.' + CrLf;
-    MsgText := MsgText +
-      'We Cannot Cleanly Unload The Interface To FreeCAD.' + CrLf;
-    MsgText := MsgText +
-      'THIS WILL MOST LIKELY RESULT IN AN APPLICATION ERROR WHEN THE PROGRAM IS CLOSED!'
-      + CrLf;
-    MsgText := MsgText + 'PLEASE SAVE YOUR WORK NOW!' + CrLf;
-    MsgText := MsgText +
-      'In The Future, Please Close FreeCAD  By Closing The CodeShark/FreeCAD Interface Dialog';
-    MessageDlg(MsgText, mtWarning, [mbOK], 0);
-  End;
-
-  ScriptLns.Free;
+  Action := caHide;
+  if StartupLoaded then
+    LoadWindowActionScript(WindowHide);
 end;
 
 procedure TFreeCadFrm.FormCreate(Sender: TObject);
@@ -783,9 +841,10 @@ Var
   MyPyDllPath: String;
 begin
   ScriptLns := TStringList.Create;
-  StarupLoaded := False;
+  StartupLoaded := False;
   ObserverLoaded := False;
   FreeCADFound := False;
+  FreeCADPid := -1;
   LastX := '';
   LastY := '';
   LastZ := ''; // init last point position
@@ -798,23 +857,67 @@ begin
   PythonEngine1.DllPath := Trim(SetFCparmsFrm.PythonHome.Text);
   PythonEngine1.DllName := Trim(SetFCparmsFrm.PyDllName.Text);
   PythonEngine1.RegVersion := SetFCparms.PyRegVersion;
+
+ {$IFDEF MSWINDOWS}
   // need to set PYTHONHOME before startup or we will fail
   // Note setting  env PYTHONHOME does not seem to work, use dll call
+
   PythonEngine1.SetPythonHome(SetFCparmsFrm.PythonHome.Text);
+  {$ENDIF}
 
   MyPyDllPath := IncludeTrailingPathDelimiter(PythonEngine1.DllPath) +
     PythonEngine1.DllName;
 
   if not(FileExists(MyPyDllPath)) then
-    Begin
-      ShowMessage('Cannot Find Python dll: ' + MyPyDllPath + ' Python dll path and or name not set, or set incorrectly');
-      ShowMessage('Cannot Start FreeCAD without Python!');
-    End
+  Begin
+    ShowMessage('Cannot Find Python dll: ' + MyPyDllPath +
+      ' Python dll path and or name not set, or set incorrectly');
+    ShowMessage('Cannot Start FreeCAD without Python!');
+  End
   else
+  Begin
+    PythonEngine1.LoadDll;
+    MaskFPUExceptions(True);
+  End;
+
+end;
+
+procedure TFreeCadFrm.FormDestroy(Sender: TObject);
+Var
+  MsgText: String;
+begin
+  if StartupLoaded then
+  begin
+  // see if we still have a FreeCAD window (user did not close)
+    FindFreeCADWindow;
+    if FreeCADFound then
     Begin
-      PythonEngine1.LoadDll;
-      MaskFPUExceptions(True);
-    End;
+      LoadWindowActionScript(WindowClose);
+      PythonEngine1.Finalize;
+    End
+
+    else
+  //
+    Begin
+      MsgText := 'The ' + FreeCADScreenName + ' Window Cannot Be Found.' + CrLf;
+      MsgText := MsgText +
+        'We Cannot Cleanly Unload The Interface To FreeCAD.' + CrLf;
+      MsgText := MsgText +
+      'THIS WILL MOST LIKELY RESULT IN AN APPLICATION ERROR WHEN THE PROGRAM IS CLOSED!'
+        + CrLf;
+      MsgText := MsgText + 'PLEASE SAVE YOUR WORK NOW!' + CrLf;
+      MsgText := MsgText +
+        'In The Future, Please Close FreeCAD  By Closing The CodeShark/FreeCAD Interface Dialog';
+      MessageDlg(MsgText, mtWarning, [mbOK], 0);
+    End
+  End;
+  ScriptLns.Free;
+end;
+
+procedure TFreeCadFrm.FormShow(Sender: TObject);
+begin
+  if StartupLoaded then
+    LoadWindowActionScript(WindowShow)
 end;
 
 procedure TFreeCadFrm.LoadStartupScript;
@@ -826,7 +929,7 @@ var
 Begin
   ScriptLns.Clear;
   ExeMemo.Lines.Clear;
-  scriptFn := FrmMain.AppDataPath + '\' + StartupScript;
+  scriptFn := FrmMain.AppDataPath + PathDelim + StartupScript;
   // if custom script file exists and load custom specified
   if SetFCparmsFrm.cbCustStart.Checked and FileExists(scriptFn) then
   begin
@@ -839,6 +942,13 @@ Begin
     // else load default
     Label2.Caption := 'Default Startup Script';
     ScriptLns.Add('import sys, os, fnmatch');
+
+// paths needing to be set differ between Linux and Windows version
+// setup here
+
+{$IFDEF LINUX}
+    ScriptLns.Add('sys.path.append(''' +SetFCparmsFrm.FreeCadMod.Text + ''')');
+{$ELSE}
     PyPath := EnsurePathHasDoubleSlashes(SetFCparmsFrm.PythonHome.Text);
     ScriptLns.Add('sys.path.append(''' + PyPath + ''')');
     PyPath := EnsurePathHasDoubleSlashes(SetFCparmsFrm.PythonHome.Text);
@@ -849,6 +959,8 @@ Begin
     ScriptLns.Add('sys.path.append(''' + PyPath + '\\Drawing'')');
     PyPath := EnsurePathHasDoubleSlashes(ExtractFileDir(ParamStr(0)));
     ScriptLns.Add('sys.path.append(''' + PyPath + ''')');
+{$ENDIF}
+
     // we expect to find  PathKurveUtils & PathSelection in CodeSharkFC exe
     // // directory, as of FC.17 it is no longer part of  Path (PathScripts)
     ScriptLns.Add('import FreeCADGui,FreeCAD');
@@ -870,18 +982,11 @@ Begin
 
     // finally fire up FreeCAD
     ScriptLns.Add('FreeCADGui.showMainWindow()');
-    ScriptLns.Add('MyMw=FreeCADGui.getMainWindow()');
-    ScriptLns.Add('MyMw.setWindowTitle("' + FreeCADScreenName + '")');
-    // change the window flags to not include the close X on the main window
-    ScriptLns.Add
-      ('flags = QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint | QtCore.Qt.CustomizeWindowHint');
-    ScriptLns.Add('MyMw.setWindowFlags(flags)');
-    ScriptLns.Add('MyMw.show()');
-    //
-    ScriptLns.Add('EdgeCnt.Value = 0');
     // and save the process id of FreeCAD
     ScriptLns.Add('MyPid = os.getpid()');
     ScriptLns.Add('CaptureFC.WrtArgs(''otherdata'',''PID'',MyPid)');
+    //
+    ScriptLns.Add('EdgeCnt.Value = 0');
 
     ExeMemo.Lines.Assign(ScriptLns);
   end;
@@ -897,7 +1002,7 @@ Begin
   try
     MaskFPUExceptions(True);
     PythonEngine1.ExecStrings(ExeMemo.Lines);
-    StarupLoaded := True;
+    StartupLoaded := True;
     PyOutMemo.Lines.Add('Startup Script Executed');
   Except
     on E: Exception do
@@ -910,6 +1015,45 @@ Begin
 
 End;
 
+procedure TFreeCadFrm.LoadWindowScript;
+var
+  scriptFn: String;
+
+Begin
+  //Include in  FreeCAD window name the PID we are running as
+  FreeCADScreenName := cFreeCADScreenName + IntToStr(FreeCADPid) + ')';
+  ScriptLns.Clear;
+  ExeMemo.Lines.Clear;
+
+  Label2.Caption := 'Window Setting Script Script';
+  ScriptLns.Add('mainWindow = FreeCADGui.getMainWindow()');
+  // now mod the window to include pid in window title
+  ScriptLns.Add('mainWindow.setWindowTitle("' + FreeCADScreenName + '")');
+  // change the window flags to not include the close X on the main window
+  ScriptLns.Add
+      ('flags = QtCore.Qt.WindowMinimizeButtonHint | QtCore.Qt.WindowMaximizeButtonHint | QtCore.Qt.CustomizeWindowHint');
+  ScriptLns.Add('mainWindow.setWindowFlags(flags)');
+  ScriptLns.Add('mainWindow.show()');
+
+  ExeMemo.Lines.Assign(ScriptLns);
+  // execute the script
+
+  try
+    MaskFPUExceptions(True);
+    PythonEngine1.ExecStrings(ExeMemo.Lines);
+    PanelViewLoaded := True;
+    PyOutMemo.Lines.Add('Window Setting Script Executed');
+  Except
+    on E: Exception do
+    begin
+      ShowMessage('Exception On Window Setting Script, class name = ' + E.ClassName
+        + CrLf + 'Exception message = ' + E.Message);
+    end;
+
+  end;
+End;
+
+
 procedure TFreeCadFrm.LoadPanelViewScript;
 var
   scriptFn: String;
@@ -917,7 +1061,7 @@ var
 Begin
   ScriptLns.Clear;
   ExeMemo.Lines.Clear;
-  scriptFn := FrmMain.AppDataPath + '\' + PanelViewScript;
+  scriptFn := FrmMain.AppDataPath + PathDelim + PanelViewScript;
   // if custom script file exists and load custom specified
   if SetFCparmsFrm.cbCustPanel.Checked and FileExists(scriptFn) then
   begin
@@ -930,6 +1074,7 @@ Begin
     // else load default
     Label2.Caption := 'Default Panel View Script';
     ScriptLns.Add('mainWindow = FreeCADGui.getMainWindow()');
+    // set the panels we want visible
     ScriptLns.Add('dockWidgets = mainWindow.findChildren(QtGui.QDockWidget)');
     ScriptLns.Add('for dw in dockWidgets:');
     ScriptLns.Add('  if dw.objectName() == "Tree view":');
@@ -987,7 +1132,7 @@ var
 Begin
   ScriptLns.Clear;
   ExeMemo.Lines.Clear;
-  scriptFn := FrmMain.AppDataPath + '\' + ObserverScript;
+  scriptFn := FrmMain.AppDataPath + PathDelim + ObserverScript;
   // if custom script file exists and load custom specified
   if SetFCparmsFrm.cbCustSelectObs.Checked and FileExists(scriptFn) then
   begin
@@ -1033,7 +1178,8 @@ Begin
     ScriptLns.Add('            MyY1 = MyStr(pnt[1])');
     ScriptLns.Add('            MyZ1 = MyStr(pnt[2])');
     ScriptLns.Add('        elif fnmatch.fnmatch(str(obj), ''Face*''): ');
-    ScriptLns.Add('            MyGeo = ''unknown-Object:'' + str(obj) + ''-subobject:'' + SubObject');
+    ScriptLns.Add
+      ('            MyGeo = ''unknown-Object:'' + str(obj) + ''-subobject:'' + SubObject');
     ScriptLns.Add('        elif fnmatch.fnmatch(SubObject, ''Edge*''): ');
     // could be Line, Circle or Arc
     ScriptLns.Add('            try:');
@@ -1073,7 +1219,8 @@ Begin
     ScriptLns.Add('        else:');
     // unknown (or un handled) type
     ScriptLns.Add('            MyGeo = ''unknown: '' + SubObject');
-    ScriptLns.Add('        print( ''Object: '' + str(obj) + '' subobject: '' + SubObject)');
+    ScriptLns.Add
+      ('        print( ''Object: '' + str(obj) + '' subobject: '' + SubObject)');
     ScriptLns.Add('        print( ''Geo:    '' + MyGeo)');
     ScriptLns.Add('        EdgeCnt.Value = len(MyEdgeList)');
     ScriptLns.Add
@@ -1122,16 +1269,43 @@ Begin
 
 End;
 
-procedure TFreeCadFrm.LoadShutdownScript;
+procedure TFreeCadFrm.LoadWindowActionScript(Action : Integer);
+// LoadWindowActionScript actions
+//  WindowShow = 0;
+//  WindowHide = 1;
+//  WindowClose = 2;
 var
-  scriptFn: String;
+  scriptFn, WindowActionFN, WindowAction: String;
 
 Begin
+  case Action of
+
+   WindowShow:
+   Begin
+    WindowActionFN := WindowShowScript;
+    WindowAction := 'FreeCADGui.getMainWindow().show()'
+   End;
+
+   WindowHide:
+   Begin
+    WindowActionFN := WindowHideScript;
+    WindowAction := 'FreeCADGui.getMainWindow().hide()'
+   End;
+
+   WindowClose:
+   Begin
+    WindowActionFN := WindowCloseScript;
+    WindowAction := 'FreeCADGui.getMainWindow().close()'
+   End
+
+  end;
+
+
   ScriptLns.Clear;
   ExeMemo.Lines.Clear;
-  scriptFn := FrmMain.AppDataPath + '\' + ShutdownScript;
+  scriptFn := FrmMain.AppDataPath + PathDelim + WindowActionFN;
   // if custom script file exists and load custom specified
-  if SetFCparmsFrm.cbCustShutdown.Checked and FileExists(scriptFn) then
+  if SetFCparmsFrm.cbCustWindowAction.Checked and FileExists(scriptFn) then
   begin
     // load ExeMemo.Lines from custom script file
     Label2.Caption := scriptFn;
@@ -1140,10 +1314,8 @@ Begin
   else
   begin
     // else load default
-    Label2.Caption := 'Default Shutdown Script';
-    ScriptLns.Add('FreeCADGui.getMainWindow().close()');
-    // ScriptLns.Add('mw=FreeCADGui.getMainWindow()');
-    // ScriptLns.Add('mw.deleteLater()');
+    Label2.Caption := 'Default Window Action Script';
+    ScriptLns.Add(WindowAction);
     ExeMemo.Lines.Assign(ScriptLns);
   end;
 
@@ -1163,7 +1335,7 @@ Begin
   Except
     on E: Exception do
     begin
-      ShowMessage('Exception On Shutdown Script, class name = ' + E.ClassName +
+      ShowMessage('Exception On ' + Label2.Caption + ' Script, class name = ' + E.ClassName +
         CrLf + 'Exception message = ' + E.Message);
     end;
 
@@ -1194,18 +1366,23 @@ begin
       + CrLf;
     MessageDlg(MsgText, mtWarning, [mbOK], 0);
   End;
-  //
+
+{$IFDEF MSWINDOWS}
+  //    -- windows only problem ? --
   // Note (or warn) for QT bug, "/platforms" directory must be local to codeshark exe, look for it
-  //  01/22/2020 this looks like it has been fixed, do not warn
-  //  02/18/2020 when using  FreeCAD_0.19.19635_x64_Conda_Py3QT5-WinVS2015   it is back again!
-  if not DirectoryExists(ExtractFilePath(ParamStr(0)) + '\platforms') then
-    ShowMessage ('Warning ... Due to QT5 issue, "platforms" directory must be copied from FreeCad ../bin/platforms to directory containing CodeSharkFC exe file, it was not found.');
+  // 01/22/2020 this looks like it has been fixed, do not warn
+  // 02/18/2020 when using  FreeCAD_0.19.19635_x64_Conda_Py3QT5-WinVS2015   it is back again!
+  if not DirectoryExists(ExtractFilePath(ParamStr(0)) + PathDelim + 'platforms') then
+    ShowMessage
+      ('Warning ... Due to QT5 issue, "platforms" directory must be copied from FreeCad ../bin/platforms to directory containing CodeSharkFC exe file, it was not found.');
+{$ENDIF}
   //
   FrmMain.Cursor := crHourGlass;
   FrmMain.StatusBar.Panels[0].Text := 'Script Statup';
   FrmMain.Refresh;
   Try
     LoadStartupScript;
+    LoadWindowScript;
     LoadPanelViewScript;
     LoadObserverScript;
   Finally
@@ -1221,6 +1398,4 @@ begin
 
 end;
 
-
 end.
-
