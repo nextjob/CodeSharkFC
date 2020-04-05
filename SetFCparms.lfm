@@ -1,11 +1,11 @@
 object SetFCparmsFrm: TSetFCparmsFrm
-  Left = 1948
-  Height = 338
-  Top = 63
-  Width = 281
+  Left = 2360
+  Height = 300
+  Top = 194
+  Width = 253
   Caption = 'Setup Parameters'
-  ClientHeight = 338
-  ClientWidth = 281
+  ClientHeight = 300
+  ClientWidth = 253
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
@@ -19,9 +19,9 @@ object SetFCparmsFrm: TSetFCparmsFrm
     Left = 8
     Height = 21
     Top = 24
-    Width = 265
+    Width = 225
     EditLabel.Height = 13
-    EditLabel.Width = 265
+    EditLabel.Width = 225
     EditLabel.Caption = 'PythonHome Env Value'
     EditLabel.ParentColor = False
     TabOrder = 0
@@ -30,10 +30,10 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object FreeCadMod: TLabeledEdit
     Left = 8
     Height = 21
-    Top = 72
-    Width = 266
+    Top = 59
+    Width = 225
     EditLabel.Height = 13
-    EditLabel.Width = 266
+    EditLabel.Width = 225
     EditLabel.Caption = 'FreeCad Mod Path'
     EditLabel.ParentColor = False
     TabOrder = 1
@@ -42,7 +42,7 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object cbCustStart: TCheckBox
     Left = 8
     Height = 19
-    Top = 152
+    Top = 120
     Width = 113
     Caption = 'Custom Start Script'
     TabOrder = 2
@@ -50,7 +50,7 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object cbCustPanel: TCheckBox
     Left = 8
     Height = 19
-    Top = 176
+    Top = 144
     Width = 140
     Caption = 'Custom View Panel Script'
     TabOrder = 3
@@ -58,23 +58,23 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object cbCustSelectObs: TCheckBox
     Left = 8
     Height = 19
-    Top = 200
+    Top = 168
     Width = 180
     Caption = 'Custom Selection Observer Script'
     TabOrder = 4
   end
-  object cbCustWindowAction: TCheckBox
+  object cbCustShutdown: TCheckBox
     Left = 8
     Height = 19
-    Top = 224
-    Width = 160
-    Caption = 'Custom Window Action Script'
+    Top = 192
+    Width = 137
+    Caption = 'Custom Shutdown Script'
     TabOrder = 5
   end
   object cbOverWriteScript: TCheckBox
     Left = 8
     Height = 19
-    Top = 256
+    Top = 216
     Width = 161
     Caption = 'Overwrite Scripts   *Caution*'
     Checked = True
@@ -82,9 +82,9 @@ object SetFCparmsFrm: TSetFCparmsFrm
     TabOrder = 6
   end
   object Label1: TLabel
-    Left = 16
+    Left = 24
     Height = 13
-    Top = 280
+    Top = 240
     Width = 220
     Caption = '* Overwrites Script with Last Executed Copy*'
     ParentColor = False
@@ -92,7 +92,7 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object cbFreeCADWarnDisable: TCheckBox
     Left = 8
     Height = 19
-    Top = 304
+    Top = 264
     Width = 184
     Caption = 'Disable FreeCAD Window Warning'
     TabOrder = 7
@@ -100,16 +100,17 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object cbPyVersions: TComboBox
     Left = 133
     Height = 21
-    Top = 119
+    Top = 96
     Width = 100
     ItemHeight = 13
     OnSelect = cbPyVersionsSelect
     TabOrder = 8
+    Text = 'cbPyVersions'
   end
   object PyDllName: TEdit
     Left = 8
     Height = 21
-    Top = 120
+    Top = 96
     Width = 104
     ReadOnly = True
     TabOrder = 9
@@ -117,7 +118,7 @@ object SetFCparmsFrm: TSetFCparmsFrm
   object Label2: TLabel
     Left = 8
     Height = 13
-    Top = 104
+    Top = 80
     Width = 40
     Caption = 'dll Name'
     ParentColor = False

@@ -35,10 +35,10 @@ unit srcmain;
 interface
 
 uses
-  Classes, SysUtils, lazfileutils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, Menus,
+  Classes, SysUtils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, Menus,
   ComCtrls, SynEdit, SynHighlighterAny, StdCtrls, Buttons,
   SynEditTypes, FindReplaceDialog,
-  SourcePrinter, eventlog, editoroptions, LazUTF8, FreeCad;
+  SourcePrinter, eventlog, editoroptions, LazUTF8;
 
 type
 
@@ -167,6 +167,7 @@ type
   private
     FileName: string;
     List: TStringList;
+    function CreateTryExcept(S: string): string;
     procedure SetEditorOptions;
     procedure AddLastModify;
   public
@@ -176,10 +177,11 @@ type
 
 var
   frmMain: TfrmMain;
-  MyFreeCADFrm : TFreeCadFrm;
   // flags set in SetFCparms, read from CodeSharkFC.ini
   LicenseRead: Boolean;      // if set do not show about screen on startup
   LicenseShown : Boolean;    // have we shown the license (about) at startup?
+  ExtraDebugging: Boolean;   // if set output extra debug info to editor window
+  FormatForPathDisplay: Boolean;      // add G1 to output (so we can send to path and evaluted with  p = Path.Path(editor lines)
 
 const
   MyAppName = 'CodeSharkFC';
@@ -194,10 +196,9 @@ const
 implementation
 
 uses
- commandline,SetFCparms, About;
+ commandline,SetFCparms, FreeCad, About;
 
 {$R *.lfm}
-
 
 function SIndexof(const S: string; List: TStrings): integer;
 var
@@ -218,6 +219,11 @@ end;
 
 { TfrmMain }
 
+
+function TfrmMain.CreateTryExcept(S: string): string;
+begin
+  result := '';
+end;
 
 procedure TfrmMain.SetEditorOptions;
 begin
@@ -421,9 +427,8 @@ begin
   FileName := 'Undefined';
   List := TStringList.Create;
 
-//  AppDataPath  := ExtractFilePath(ParamStr(0));
+  AppDataPath  := ExtractFilePath(ParamStr(0));
 
-  AppDataPath  := ExtractFilePath(ChompPathDelim(GetAppConfigDirUTF8(False)));
 
   AppDataPath := AppDataPath + MyAppName;
   // does the application's data directory exist?
@@ -432,10 +437,8 @@ begin
     ShowMessage(AppDataPath + ' Does not exist, Creating');
     CreateDir(AppDataPath);
   End;
-//ShowMessage('AppDataPath: ' + AppDataPath);
+  //ShowMessage('AppDataPath: ' + AppDataPath);
   LicenseShown := False;
-// nil our soon to be created FreeCad Interface Dialog
-   MyFreeCADFrm := nil;
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -490,33 +493,25 @@ end;
 
 procedure TfrmMain.MnuFCRunClick(Sender: TObject);
 begin
-{
-    From  https://www.thoughtco.com/tform-createaowner-aowner-1057563
-    When you create Delphi objects dynamically that inherit from TControl, such as a TForm (representing
-     a form/window in Delphi applications), the constructor "Create" expects an "Owner" parameter:
-    Modeless forms. Use "Application" as the owner:
-    var
-    myForm : TMyForm;
-    ...
-    myForm := TMyForm.Create(Application) ;
+  SetFCparmsFrm.Loadini; // make sure we have the setup info loaded for python
+  // Rem     Modeless forms. Use "Application" as the owner:
+  // var
+  //      myForm : TMyForm;
+  //         ...       myForm := TMyForm.Create(Application) ;
+  // Now, when you terminate (exit) the application, the "Application" object will free the "myForm" instance.
+  //
+  
+  // For now do not let user resart FreeCAD we need to figure out how to reinitialize the python engine and python and freeCAD
+  MnuFCRun.Enabled := False;
 
-    Now, when you terminate (exit) the application,
-    the "Application" object will free the "myForm" instance.
-
-}
-  if MyFreeCADFrm = nil then
+  With TFreeCadFrm.Create(Application) Do
   Begin
-    SetFCparmsFrm.LoadIni; // make sure we have the setup info loaded for python
-    MyFreeCADFrm :=TFreeCadFrm.Create(Application);
-    try
-     MyFreeCADFrm.Show;
-    Except
-    on E : Exception do
-      ShowMessage(E.ClassName+' error raised on MyFreeCAD form creation, with message : '+E.Message);
-    end;
-  End
-  else
-    MyFreeCADFrm.Show;
+//    Try
+      show;
+//    Finally
+//      Free;
+//    End
+  End;
 end;
 
 procedure TfrmMain.MnuFCSettingsClick(Sender: TObject);

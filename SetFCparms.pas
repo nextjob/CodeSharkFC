@@ -18,29 +18,6 @@
 }
 
 unit SetFCparms;
-{
- ***  This is how I understand things, could be wrong, but seems to make things work for now ***
- There are diffeneces in the way Linux and Windows are setup in regards to python.
-
- For Windows, we use the python interpreter packaged with FreeCAD (and found in the FreeCAD
- directory). We also need to assign PYTHONHOME environment variable to this python's installation.
- The path of PYTHONHOME is also where we will find the Pythonxy.dll file (where xy is the version ie 3.7)
- used by Python4Delphi.  We will assign this path and file name to the PythonEngine component properties (DllPath and DllName)
- We also need to assign to sys.path the path to the FreeCAD Mod directory in our startup script.
- Therefore, we expect the user to locate these directories and save the paths with the Setup Parameters Dialog
- (SetFCparmsFrm)
-
- For Linux things appear to behave a little differently.
- We have no need to set PYTHONHOME.
- We do however need to find where the Python interface library used by Python4Delphi is located and the library name.
- We will assign this path and file name to the PythonEngine component properties (DllPath and DllName)
- On the linux system (Mint 19.3) / FreeCAD 18.4 the following location and file are used:
- DllPath: /usr/lib/python3.6/config-3.6m-x86_64-linux-gnu
- DllName: libpython3.6m.so
- it may be worth noting that the file in the above directory was actualyy a link to the file in
-  /usr/lib/x86_64-linux-gnu/libpython3.6m.so.1
-  which was a link to  /usr/lib/x86_64-linux-gnu/libpython3.6m.so.1.0
-}
 
 {$MODE Delphi}
 
@@ -66,7 +43,7 @@ type
     cbCustStart: TCheckBox;
     cbCustPanel: TCheckBox;
     cbCustSelectObs: TCheckBox;
-    cbCustWindowAction: TCheckBox;
+    cbCustShutdown: TCheckBox;
     procedure cbPyVersionsSelect(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
@@ -84,15 +61,12 @@ type
 var
   SetFCparmsFrm: TSetFCparmsFrm;
   PyRegVersion : string;
-  ExtraDebugging: Boolean;   // if set output extra debug info to editor window
-  FormatForPathDisplay: Boolean;      // add G1 to output (so we can send to path and evaluted with  p = Path.Path(editor lines)
-
 
 implementation
 
 {$R *.lfm}
 
-uses srcMain;
+uses srcMain, ComonFunctions;
 
 Const
   // ini file section names
@@ -100,17 +74,6 @@ Const
   ScriptsSection = 'Scripts';
   WarningsSection = 'Warnings';
 
-  {$IFDEF LINUX}
-  PythonHomeCaption = 'Python Interface Lib Path';
-  PythonHomeHint = 'Python Interface Lib Path (typically: /usr/lib/pythonX.Y/config-X.Ym-x86_64-linux-gnu)';
-  FreeCADModLibCaption = 'FreeCAD Python Libraries';
-  FreeCADModLibHint = 'FreeCAD Python Libraries Path (typically: /usr/lib/freecad-python3/lib)';
-  {$ELSE}
-  PythonHomeCaption = 'PythonHome Env Value';
-  PythonHomeHint = 'PythonHome Path (typically: ..\FreeCad\bin)';
-  FreeCADModLibCaption = 'FreeCad Mod Path';
-  FreeCADModLibHint = 'FreeCad Mod Directory (typically: ..\FreeCad\Mod)';
-  {$ENDIF}
 procedure TSetFCparmsFrm.FormClose(Sender: TObject; var Action: TCloseAction);
 Begin
   SaveIni;
@@ -122,11 +85,6 @@ procedure TSetFCparmsFrm.FormShow(Sender: TObject);
 
 begin
   LoadIni;
-// requirements for what we need to pass for path in python script
-// vary between Windows and Linux
-// Change dialog captions accordingly
-   FreeCadMod.EditLabel.Caption:= FreeCADModLibCaption;
-   PythonHome.EditLabel.Caption := PythonHomeCaption;
 end;
 
 procedure TSetFCparmsFrm.cbPyVersionsSelect(Sender: TObject);
@@ -144,8 +102,6 @@ var
 begin
    for PyEngineVersion in PYTHON_KNOWN_VERSIONS do
     cbPyVersions.Items.Add(PyEngineVersion.DllName);
-
-
 end;
 
 
@@ -158,16 +114,19 @@ begin
 
   // read in the ini file
   Try
-    Inif := TMemIniFile.Create(FrmMain.AppDataPath + PathDelim + MyAppName + '.ini');
+    Inif := TMemIniFile.Create(FrmMain.AppDataPath + '\' + MyAppName + '.ini');
     PythonHome.Text := Inif.ReadString(PathSection, 'PythonHome', '');
+//    PyDllPath.Text := Inif.ReadString(PathSection, 'PythonDllPath', '');
     PyDllName.Text := Inif.ReadString(PathSection, 'PythonDllName', '');
     PyRegVersion := Inif.ReadString(PathSection, 'RegVersion', '');
+//
+//    FreeCadBin.Text := Inif.ReadString(PathSection, 'FreeCadBin', '');
     FreeCadMod.Text := Inif.ReadString(PathSection, 'FreeCadMod', '');
 
     cbCustStart.Checked := Inif.ReadBool(ScriptsSection,'Custom_Start_Script',cbCustStart.Checked);
     cbCustPanel.Checked := Inif.ReadBool(ScriptsSection,'Custom_View_Panel_Script', cbCustPanel.Checked);
     cbCustSelectObs.Checked := Inif.ReadBool(ScriptsSection,'Custom_Selection_Observer_Script', cbCustSelectObs.Checked);
-    cbCustWindowAction.Checked := Inif.ReadBool(ScriptsSection,'Custom_Shutdown_Script', cbCustWindowAction.Checked);
+    cbCustShutdown.Checked := Inif.ReadBool(ScriptsSection,'Custom_Shutdown_Script', cbCustShutdown.Checked);
     cbOverWriteScript.Checked := Inif.ReadBool(ScriptsSection,'Overwrite_Custom_Scripts', cbOverWriteScript.Checked);
 
     cbFreeCADWarnDisable.Checked := Inif.ReadBool(WarningsSection,'Disable_FreeCAD_Window_Warning', cbFreeCADWarnDisable.Checked);
@@ -188,36 +147,50 @@ var
 
 begin
   Try
-    Inif := TMemIniFile.Create(FrmMain.AppDataPath + PathDelim + MyAppName + '.ini');
-
+    Inif := TMemIniFile.Create(FrmMain.AppDataPath + '\' + MyAppName + '.ini');
 
     if (Length(PythonHome.Text) > 0) and (DirectoryExists(PythonHome.Text))
     then
       Inif.WriteString(PathSection, 'PythonHome', PythonHome.Text)
     else
-      showMessage(PythonHomeCaption + ' not found, ' + PythonHome.Text);
+      showMessage('Python Home not set, ' + PythonHome.Text + ' not found');
 
-
-    if (Length(PyDllName.Text) > 0) then
+  {  if (Length(PyDllPath.Text) > 0) and (TDirectory.Exists(PyDllPath.Text)) then
+      Inif.WriteString(PathSection, 'PythonDllPath', PyDllPath.Text)
+    else
+      showMessage('Python Dll Path not set, ' + PyDllPath.Text + ' not found');
+  }
+    if (Length(PyDllName.Text) > 0) and
+      (FileExists(PythonHome.Text + '\' + PyDllName.Text)) then
       Inif.WriteString(PathSection, 'PythonDllName', PyDllName.Text)
     else
-      showMessage('Python Dll Name not set');
+      showMessage('Python Dll Name not set, ' + PythonHome.Text + '\' +
+      PyDllName.Text + ' not found');
 
     if (Length(PyRegVersion) > 0) then
       Inif.WriteString(PathSection, 'RegVersion', PyRegVersion)
     else
       showMessage('Python Registered Version not set');
+    {
+    if (Length(FreeCadBin.Text) > 0) and (TDirectory.Exists(FreeCadBin.Text))
+    then
+      Inif.WriteString(PathSection, 'FreeCadBin', FreeCadBin.Text)
+    else
+      showMessage('FreeCad Bin Directory Path not set, ' + FreeCadBin.Text +
+        ' not found');
 
+  }
     if (Length(FreeCadMod.Text) > 0) and (DirectoryExists(FreeCadMod.Text))
     then
       Inif.WriteString(PathSection, 'FreeCadMod', FreeCadMod.Text)
     else
-      showMessage(FreeCADModLibCaption +' not found, ' + FreeCadMod.Text );
+      showMessage('FreeCad Mod Directory Path not set, ' + FreeCadMod.Text +
+        ' not found');
 
     Inif.WriteBool(ScriptsSection, 'Custom_Start_Script', cbCustStart.Checked);
     Inif.WriteBool(ScriptsSection, 'Custom_View_Panel_Script',cbCustPanel.Checked);
     Inif.WriteBool(ScriptsSection, 'Custom_Selection_Observer_Script',cbCustSelectObs.Checked);
-    Inif.WriteBool(ScriptsSection, 'Custom_Shutdown_Script',cbCustWindowAction.Checked);
+    Inif.WriteBool(ScriptsSection, 'Custom_Shutdown_Script',cbCustShutdown.Checked);
     Inif.WriteBool(ScriptsSection, 'Overwrite_Custom_Scripts',cbOverWriteScript.Checked);
 
     Inif.WriteBool(WarningsSection, 'Disable_FreeCAD_Window_Warning',cbFreeCADWarnDisable.Checked);
@@ -233,6 +206,23 @@ begin
 end;
 
 
+{procedure TSetFCparmsFrm.FreeCadBinChange(Sender: TObject);
+var
+  RDir: string;
+  ADir: TArray<string>;
+begin
+  if Length(FreeCadBin.Text) <> 0 then
+    RDir := FreeCadBin.Text
+  else
+    RDir := 'C:\';
+
+  if FileCtrl.SelectDirectory(RDir, ADir, [],
+    'Select FreeCad Bin Directory', 'FreeCad Bin Directory (typically: ..\FreeCad\bin)')
+  then
+    FreeCadBin.Text := ADir[0];
+end;
+}
+
 procedure TSetFCparmsFrm.FreeCadModClick(Sender: TObject);
 var
   RDir: string;
@@ -241,16 +231,41 @@ begin
   if Length(FreeCadMod.Text) <> 0 then
     RDir := FreeCadMod.Text
   else
-{$IFDEF WINDOWS}
     RDir := 'C:\';
-{$ELSE}
-    RDir := '\usr';
-{$ENDIF}
 
-  if SelectDirectory(FreeCADModLibHint,RDir, ADir)
+  if SelectDirectory('FreeCad Mod Directory (typically: ..\FreeCad\Mod)',RDir, ADir)
   then
     FreeCadMod.Text := ADir;
 end;
+
+{procedure TSetFCparmsFrm.PyDllNameClick(Sender: TObject);
+var
+  RDir, Fn: string;
+begin
+  if Length(PyDllName.Text) <> 0 then
+    RDir := ExtractFilePath(PyDllName.Text)
+  else
+    RDir := 'C:\';
+
+  if PromptForFileName(Fn, 'Dll files (*.dll)|*.dll|All files (*.*)', '',
+    'Select Python Dll (typically: ..\FreeCad\bin\pythonxx.dll)', RDir, False) then
+    PyDllName.Text := ExtractFileName(Fn);
+end;}
+
+{procedure TSetFCparmsFrm.PyDllPathClick(Sender: TObject);
+var
+  RDir: string;
+  ADir: TArray<string>;
+begin
+  if Length(PyDllPath.Text) <> 0 then
+    RDir := PyDllPath.Text
+  else
+    RDir := 'C:\';
+
+  if FileCtrl.SelectDirectory(RDir, ADir, [],
+    'Select Python Dll Path ', 'Python Dll Path (typically: ..\FreeCad\bin)') then
+    PyDllPath.Text := ADir[0];
+end; }
 
 procedure TSetFCparmsFrm.PythonHomeClick(Sender: TObject);
 var
@@ -260,13 +275,9 @@ begin
   if Length(PythonHome.Text) <> 0 then
     RDir := PythonHome.Text
   else
-{$IFDEF WINDOWS}
     RDir := 'C:\';
-{$ELSE}
-        RDir := '\usr';
-{$ENDIF}
 
-  if SelectDirectory(PythonHomeHint,RDir, ADir) then
+  if SelectDirectory('PythonHome Path (typically: ..\FreeCad\bin)',RDir, ADir) then
     PythonHome.Text := ADir;
 end;
 
