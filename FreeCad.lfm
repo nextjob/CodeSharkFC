@@ -1,7 +1,7 @@
 object FreeCadFrm: TFreeCadFrm
-  Left = 1445
+  Left = 2027
   Height = 419
-  Top = 363
+  Top = 354
   Width = 356
   Caption = 'FreeCad Interface'
   ClientHeight = 419
@@ -15,13 +15,14 @@ object FreeCadFrm: TFreeCadFrm
   Font.Quality = fqDraft
   OnClose = FormClose
   OnCreate = FormCreate
+  OnShow = FormShow
   Position = poOwnerFormCenter
   LCLVersion = '2.0.6.0'
   object Label1: TLabel
     Left = 11
-    Height = 13
+    Height = 14
     Top = 283
-    Width = 74
+    Width = 85
     Caption = 'Python Output '
     Font.Color = clWindowText
     Font.Height = -11
@@ -31,9 +32,9 @@ object FreeCadFrm: TFreeCadFrm
   end
   object Label2: TLabel
     Left = 8
-    Height = 13
+    Height = 14
     Top = 184
-    Width = 100
+    Width = 118
     Caption = 'Python Script Strings'
     Font.Color = clWindowText
     Font.Height = -11
@@ -96,9 +97,9 @@ object FreeCadFrm: TFreeCadFrm
       TabOrder = 1
       object Label3: TLabel
         Left = 56
-        Height = 13
+        Height = 14
         Top = 72
-        Width = 81
+        Width = 100
         Caption = 'Decimal Precision'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -111,9 +112,9 @@ object FreeCadFrm: TFreeCadFrm
       end
       object cbIncludeZ: TCheckBox
         Left = 8
-        Height = 19
+        Height = 23
         Top = 40
-        Width = 129
+        Width = 156
         Caption = 'Include Z Axis Address'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -126,7 +127,7 @@ object FreeCadFrm: TFreeCadFrm
       end
       object UpDown1: TUpDown
         Left = 34
-        Height = 21
+        Height = 26
         Top = 72
         Width = 16
         Associate = EdtUpDown
@@ -137,7 +138,7 @@ object FreeCadFrm: TFreeCadFrm
       end
       object EdtUpDown: TEdit
         Left = 8
-        Height = 21
+        Height = 26
         Top = 72
         Width = 26
         Font.Color = clWindowText
@@ -150,9 +151,9 @@ object FreeCadFrm: TFreeCadFrm
       end
       object Label4: TLabel
         Left = 8
-        Height = 13
+        Height = 14
         Top = 16
-        Width = 122
+        Width = 146
         Caption = 'Picked Geometry Settings'
         ParentColor = False
       end
@@ -172,9 +173,9 @@ object FreeCadFrm: TFreeCadFrm
       TabOrder = 2
       object cbBypassSel: TCheckBox
         Left = 13
-        Height = 19
+        Height = 23
         Top = 32
-        Width = 135
+        Width = 163
         Caption = 'Bypass Selection Import'
         Font.CharSet = ANSI_CHARSET
         Font.Color = clBlack
@@ -219,25 +220,25 @@ object FreeCadFrm: TFreeCadFrm
       end
       object Label5: TLabel
         Left = 16
-        Height = 13
+        Height = 14
         Top = 88
-        Width = 100
+        Width = 117
         Caption = 'Selected Edge Count'
         ParentColor = False
       end
       object lblEdgeCnt: TLabel
         Left = 128
-        Height = 13
+        Height = 14
         Top = 88
-        Width = 6
+        Width = 7
         Caption = '0'
         ParentColor = False
       end
       object Label6: TLabel
         Left = 8
-        Height = 13
+        Height = 14
         Top = 0
-        Width = 22
+        Width = 25
         Caption = 'Path'
         ParentColor = False
       end
@@ -257,9 +258,9 @@ object FreeCadFrm: TFreeCadFrm
   end
   object cbRawOut: TCheckBox
     Left = 16
-    Height = 19
+    Height = 23
     Top = 395
-    Width = 104
+    Width = 122
     Caption = 'Output Raw Data'
     Font.Color = clWindowText
     Font.Height = -11
