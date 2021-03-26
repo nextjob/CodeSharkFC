@@ -1,0 +1,94 @@
+Revision History
+0.01b - This revision starts to bring CodeSharkFC in line with the Delphi version (CodeSharkFCs).
+	- Serial communication via LazSerial
+	- Update to CodeSharkFCs version of FreeCAD.pas
+	- Add g code highlighting
+
+
+
+For Reference, CodeSharkFCs rev history:
+
+.01	srcMain.pas
+	Remove local functions find ..\AppData\Local and create temp files
+	Replace with TPath.GetCachePath, TPath.GetTempFileName
+	FreeCAD.pas
+	Mods to compile with Lazarus on Linux
+.02
+	FreeCAD.pas
+	Include process PID in window title
+.03
+	SrcMain.pas & FreeCad.pas & SetFCparms.pas
+	Change the way FreeCAD application window is controlled.
+	Now when we
+	  1st click of the "Run FreeCAD" menu item from the CodeSharkFC window
+		- create instance of FreeCAD Interface Dialog and show it
+	  Click "Run FreeCAD" button from FreeCAD Interface Dialog
+	  	- Start the FreeCAD application via an instance of Python4Delphi
+		- disable the "Run FreeCAD" button on the FreeCAD Interface Dialog
+	  Close the FreeCAD Interface Dialog
+		 - Hide the FreeCAD application window
+	  2nd and on click of the "Run FreeCAD" menu item from the CodeSharkFC window
+		if FreeCAD application stated
+			- show the FreeCAD Interface Dialog & FreeCAD application window
+		if FreeCAD application not stated
+			- show the FreeCAD Interface Dialog
+			- "Run FreeCAD" button on FreeCAD Interface Dialog is Enabled and
+				user can start FreeCAD
+	  Close CodeSharkFC window
+		if FreeCAD application stated
+			- close FreeCAD application
+		destroy instance of FreeCAD Interface Dialog (and instance of Python4Delphi)
+ .04
+	About.pas & scrMain.pas
+	Prompt for license acceptance on about dialog close.
+	Notify user of application termination on license nonacceptance
+.05
+    FreeCad.pas & scrMain.pas 
+	Add code for Linux version to find window names, mods to python module we create, see below:
+	There is something stange with referenceing objects on FreeCad dialog in the functions that will
+	be called via python.  Using the local namespace ie FreeCadFrm.lblEdgeCnt.Caption or  FreeCADFrm.PyOutMemo.Lines.Add('xyz')
+	results in an access viloation.  I suspect this is because  FreeCADFrm is dynamically created in srcMain.
+	However, if we reference it from the creator (scrMain  ie srcMain.MyFreeCADFrm.lblEdgeCnt.Caption ) we can get this to work
+.06
+    FreeCad.pas
+	Add PathFromShapes option for path generation
+    SetTool.pas
+	Add Start XYZ for Path FromShapes
+	Add basic input validation
+.07
+    SetTool.pas
+	Rearrange tool settings, id PathShape vs PathKurveUtils settings	
+.08
+    Per user request:
+	Add MiniEdit
+	Tools 
+	  Sequence Number insert or remove (renumber)
+	  Remove spaces 
+	  Tool Renumber
+	Force editor to upper case letters
+.09
+    FreeCad.pas & scrMain.pas 
+    	Add ability for user defined static g code templates along with python (QT) dialogs to be executed from within CodeSharkFCs
+ 	Updated documentation to follow
+.10 
+    scrMain.pas
+        Add hot keys to send from editor, send from file and receive (CNC menu).
+        Updated documentation 
+        Include CodeSharkFCs.chm 
+.11
+    scrMain.pas
+         Catch XML parsing exception. 
+.12
+    All modules - change license to Unlicense For more information, please refer to <http://unlicense.org/>
+    scrMain.pas 
+        Add Plug Ins Menu item & File Compare plugin 
+    FreeCad.pas 
+        Update uses block to Vcl.PythonGUIInputOutput for latest Python4Delphi version
+.13
+    scrMain, HighlightSettings, Settings
+        Add simple GCode Highlighting to Synedit window
+.14 FreeCad.pas 
+	Latest version of Python4Delphi no longer has the .Finalize method as public.  Remove call and set PythonEngine1.AutoFinalize to True.
+        Path By XXX buttons not enabled until FreeCAD is running
+	Correct Selected Edges Count (was not reset in python script after Path By XXX executed)
+        LoadStartupScript - Remove import Path and move import PathKurveUtils to after FreeCADGui.showMainWindow(), was causing Gui Startup (App.GuiUp) problems. 

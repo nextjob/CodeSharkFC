@@ -115,6 +115,9 @@
       <Version Value="2"/>
     </PublishOptions>
     <RunParams>
+      <local>
+        <LaunchingApplication PathPlusParams="\usr\X11R6\bin\xterm -T 'Lazarus Run Output' -e $(LazarusDir)\tools\runwait.sh $(TargetCmdLine)"/>
+      </local>
       <FormatVersion Value="2"/>
       <Modes Count="1">
         <Mode0 Name="default">
@@ -124,38 +127,42 @@
         </Mode0>
       </Modes>
     </RunParams>
-    <RequiredPackages Count="6">
+    <RequiredPackages Count="7">
       <Item1>
-        <PackageName Value="P4DLaz"/>
+        <PackageName Value="python4lazarus_package"/>
       </Item1>
       <Item2>
-        <PackageName Value="FCL"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="LazSerialPort"/>
       </Item2>
       <Item3>
-        <PackageName Value="LCL"/>
+        <PackageName Value="FCL"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item3>
       <Item4>
-        <PackageName Value="SynEdit"/>
-        <MinVersion Major="1" Valid="True"/>
+        <PackageName Value="LCL"/>
       </Item4>
       <Item5>
-        <PackageName Value="RunTimeTypeInfoControls"/>
-        <MinVersion Minor="1" Valid="True"/>
+        <PackageName Value="SynEdit"/>
+        <MinVersion Major="1" Valid="True"/>
       </Item5>
       <Item6>
+        <PackageName Value="RunTimeTypeInfoControls"/>
+        <MinVersion Minor="1" Valid="True"/>
+      </Item6>
+      <Item7>
         <PackageName Value="Printer4Lazarus"/>
         <MinVersion Minor="5" Valid="True"/>
-      </Item6>
+      </Item7>
     </RequiredPackages>
-    <Units Count="26">
+    <Units Count="36">
       <Unit0>
         <Filename Value="CodeSharkFC.lpr"/>
         <IsPartOfProject Value="True"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="8"/>
-        <CursorPos X="55" Y="23"/>
-        <UsageCount Value="159"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="14"/>
+        <CursorPos Y="50"/>
+        <UsageCount Value="184"/>
+        <Loaded Value="True"/>
       </Unit0>
       <Unit1>
         <Filename Value="srcmain.pas"/>
@@ -163,10 +170,9 @@
         <ComponentName Value="frmMain"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <IsVisibleTab Value="True"/>
-        <TopLine Value="26"/>
-        <CursorPos X="59" Y="41"/>
-        <UsageCount Value="159"/>
+        <TopLine Value="751"/>
+        <CursorPos X="5" Y="778"/>
+        <UsageCount Value="184"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
@@ -174,7 +180,7 @@
         <Filename Value="tcnv.pas"/>
         <TopLine Value="54"/>
         <CursorPos X="22" Y="216"/>
-        <UsageCount Value="11"/>
+        <UsageCount Value="10"/>
       </Unit2>
       <Unit3>
         <Filename Value="findreplacedialog.pas"/>
@@ -183,10 +189,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="FindReplaceDialog"/>
-        <EditorIndex Value="-1"/>
+        <EditorIndex Value="6"/>
         <TopLine Value="38"/>
-        <CursorPos X="53" Y="54"/>
-        <UsageCount Value="101"/>
+        <CursorPos X="86" Y="58"/>
+        <UsageCount Value="126"/>
+        <Loaded Value="True"/>
       </Unit3>
       <Unit4>
         <Filename Value="editoroptions.pas"/>
@@ -194,77 +201,80 @@
         <ComponentName Value="SynEditOptionsForm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="3" Y="285"/>
-        <UsageCount Value="116"/>
+        <EditorIndex Value="4"/>
+        <TopLine Value="48"/>
+        <CursorPos X="15" Y="80"/>
+        <UsageCount Value="141"/>
+        <Loaded Value="True"/>
       </Unit4>
       <Unit5>
         <Filename Value="D:\Lazarus\components\synedit\synedit.pp"/>
         <UnitName Value="SynEdit"/>
         <TopLine Value="593"/>
         <CursorPos X="23" Y="349"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit5>
       <Unit6>
         <Filename Value="templates\class_tobject.pt"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit6>
       <Unit7>
         <Filename Value="templates\gplunit.pt"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
         <DefaultSyntaxHighlighter Value="None"/>
       </Unit7>
       <Unit8>
         <Filename Value="synsuggestion.pas"/>
         <CursorPos X="33" Y="12"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit8>
       <Unit9>
         <Filename Value="expression.pas"/>
         <TopLine Value="33"/>
         <CursorPos X="5" Y="43"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
       </Unit9>
       <Unit10>
         <Filename Value="findinfilesdlg.pas"/>
         <UnitName Value="FindInFilesDlg"/>
         <TopLine Value="3"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit10>
       <Unit11>
         <Filename Value="ueval.pas"/>
         <TopLine Value="264"/>
         <CursorPos Y="272"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit11>
       <Unit12>
         <Filename Value="commandline.pas"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="18"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit12>
       <Unit13>
         <Filename Value="SetFCparms.pas"/>
+        <IsPartOfProject Value="True"/>
         <ComponentName Value="SetFCparmsFrm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="2"/>
-        <TopLine Value="71"/>
-        <CursorPos X="2" Y="87"/>
-        <UsageCount Value="36"/>
+        <EditorIndex Value="10"/>
+        <TopLine Value="63"/>
+        <CursorPos Y="82"/>
+        <UsageCount Value="60"/>
         <Loaded Value="True"/>
-        <LoadedDesigner Value="True"/>
       </Unit13>
       <Unit14>
         <Filename Value="FreeCad.pas"/>
+        <IsPartOfProject Value="True"/>
         <ComponentName Value="FreeCadFrm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="1"/>
-        <TopLine Value="59"/>
-        <CursorPos X="3" Y="384"/>
-        <UsageCount Value="42"/>
+        <EditorIndex Value="8"/>
+        <TopLine Value="1038"/>
+        <CursorPos X="40" Y="1031"/>
+        <UsageCount Value="67"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit14>
@@ -273,16 +283,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="5449"/>
         <CursorPos Y="5463"/>
-        <UsageCount Value="7"/>
+        <UsageCount Value="6"/>
       </Unit15>
       <Unit16>
         <Filename Value="SetTool.pas"/>
+        <IsPartOfProject Value="True"/>
         <ComponentName Value="SetToolFRM"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <CursorPos X="57" Y="23"/>
-        <UsageCount Value="25"/>
+        <EditorIndex Value="9"/>
+        <TopLine Value="84"/>
+        <CursorPos X="2" Y="3"/>
+        <UsageCount Value="49"/>
+        <Loaded Value="True"/>
       </Unit16>
       <Unit17>
         <Filename Value="about.pas"/>
@@ -290,36 +303,36 @@
         <ComponentName Value="AboutFrm"/>
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
-        <EditorIndex Value="-1"/>
-        <TopLine Value="43"/>
-        <CursorPos X="85" Y="70"/>
-        <UsageCount Value="86"/>
+        <EditorIndex Value="11"/>
+        <TopLine Value="24"/>
+        <CursorPos X="72" Y="29"/>
+        <UsageCount Value="111"/>
+        <Loaded Value="True"/>
       </Unit17>
       <Unit18>
         <Filename Value="C:\lazarus\components\python4delphi\PythonForDelphi\Components\Sources\Core\PythonEngine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5448"/>
         <CursorPos Y="5461"/>
-        <UsageCount Value="9"/>
+        <UsageCount Value="8"/>
       </Unit18>
       <Unit19>
         <Filename Value="C:\lazarus\components\python4delphi-master\PythonForDelphi\Components\Sources\Core\PythonEngine.pas"/>
         <EditorIndex Value="-1"/>
         <TopLine Value="5506"/>
         <CursorPos Y="5529"/>
-        <UsageCount Value="15"/>
-        <DefaultSyntaxHighlighter Value="Delphi"/>
+        <UsageCount Value="14"/>
       </Unit19>
       <Unit20>
         <Filename Value="FreeCad.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit20>
       <Unit21>
         <Filename Value="SetTool.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="8"/>
+        <UsageCount Value="7"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit21>
       <Unit22>
@@ -327,19 +340,19 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="675"/>
         <CursorPos Y="687"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit22>
       <Unit23>
         <Filename Value="srcmain.lfm"/>
         <EditorIndex Value="-1"/>
         <CursorPos X="40" Y="7"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit23>
       <Unit24>
         <Filename Value="SetFCparms.lfm"/>
         <EditorIndex Value="-1"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit24>
       <Unit25>
@@ -347,129 +360,222 @@
         <EditorIndex Value="-1"/>
         <TopLine Value="3546"/>
         <CursorPos Y="3562"/>
-        <UsageCount Value="10"/>
+        <UsageCount Value="9"/>
       </Unit25>
+      <Unit26>
+        <Filename Value="C:\lazarus\components\TLazSerial-master\TLazSerial-master\lazsynaser.pas"/>
+        <UnitName Value="LazSynaSer"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1050"/>
+        <CursorPos X="108" Y="1059"/>
+        <UsageCount Value="10"/>
+      </Unit26>
+      <Unit27>
+        <Filename Value="C:\lazarus\components\python4delphi-master\Source\PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="259"/>
+        <UsageCount Value="9"/>
+      </Unit27>
+      <Unit28>
+        <Filename Value="C:\lazarus\components\fpreport\dlginputcombo.pp"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="18"/>
+        <CursorPos X="6" Y="35"/>
+        <UsageCount Value="9"/>
+      </Unit28>
+      <Unit29>
+        <Filename Value="C:\Laz_components\python4delphi-master\Source\PythonEngine.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="2633"/>
+        <CursorPos X="24" Y="2650"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit29>
+      <Unit30>
+        <Filename Value="C:\lazarus\components\synedit\synedithighlighterxmlbase.pas"/>
+        <UnitName Value="SynEditHighlighterXMLBase"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="246"/>
+        <UsageCount Value="10"/>
+      </Unit30>
+      <Unit31>
+        <Filename Value="ugcodehl.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uGCodeHL"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="258"/>
+        <CursorPos X="59" Y="285"/>
+        <UsageCount Value="37"/>
+        <Loaded Value="True"/>
+      </Unit31>
+      <Unit32>
+        <Filename Value="EditColors.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrmColors"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="5"/>
+        <CursorPos X="21" Y="6"/>
+        <UsageCount Value="32"/>
+        <Loaded Value="True"/>
+      </Unit32>
+      <Unit33>
+        <Filename Value="ureceive.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmReceive"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uReceive"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="43"/>
+        <CursorPos X="71" Y="44"/>
+        <UsageCount Value="29"/>
+        <Loaded Value="True"/>
+      </Unit33>
+      <Unit34>
+        <Filename Value="usend.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmSend"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="uSend"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="68"/>
+        <CursorPos X="58" Y="94"/>
+        <UsageCount Value="27"/>
+        <Loaded Value="True"/>
+      </Unit34>
+      <Unit35>
+        <Filename Value="C:\lazarus\lcl\dialogs.pp"/>
+        <UnitName Value="Dialogs"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="24"/>
+        <CursorPos X="16" Y="43"/>
+        <UsageCount Value="9"/>
+      </Unit35>
     </Units>
     <JumpHistory Count="30" HistoryIndex="29">
       <Position1>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="424" Column="16" TopLine="404"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="77" Column="5" TopLine="45"/>
       </Position1>
       <Position2>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="426" Column="14" TopLine="406"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="70" Column="14" TopLine="42"/>
       </Position2>
       <Position3>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="428" Column="29" TopLine="408"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="71" Column="14" TopLine="43"/>
       </Position3>
       <Position4>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="430" Column="37" TopLine="410"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="72" Column="51" TopLine="44"/>
       </Position4>
       <Position5>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="432" Column="28" TopLine="412"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="73" Column="51" TopLine="45"/>
       </Position5>
       <Position6>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="433" Column="26" TopLine="413"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="75" Column="51" TopLine="56"/>
       </Position6>
       <Position7>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="435" TopLine="415"/>
+        <Caret Line="616" Column="6" TopLine="598"/>
       </Position7>
       <Position8>
         <Filename Value="srcmain.pas"/>
-        <Caret Line="39" Column="60" TopLine="27"/>
+        <Caret Line="615" Column="6" TopLine="597"/>
       </Position8>
       <Position9>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="128" Column="3" TopLine="118"/>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="167" TopLine="146"/>
       </Position9>
       <Position10>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="130" TopLine="118"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="76" Column="68" TopLine="56"/>
       </Position10>
       <Position11>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="131" Column="3" TopLine="121"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="77" Column="68" TopLine="57"/>
       </Position11>
       <Position12>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="136" Column="75" TopLine="123"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="76" Column="68" TopLine="56"/>
       </Position12>
       <Position13>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="289" Column="16" TopLine="280"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="77" Column="68" TopLine="57"/>
       </Position13>
       <Position14>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="309" Column="47" TopLine="300"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="78" Column="68" TopLine="58"/>
       </Position14>
       <Position15>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="368" TopLine="358"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="79" Column="68" TopLine="59"/>
       </Position15>
       <Position16>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="945" Column="73" TopLine="938"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="72" Column="84" TopLine="60"/>
       </Position16>
       <Position17>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="63" Column="15" TopLine="55"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="73" Column="37" TopLine="56"/>
       </Position17>
       <Position18>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="94" Column="15" TopLine="86"/>
+        <Filename Value="usend.pas"/>
+        <Caret Line="75" Column="37" TopLine="58"/>
       </Position18>
       <Position19>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="215" Column="77" TopLine="206"/>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="537" Column="82" TopLine="527"/>
       </Position19>
       <Position20>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="82" Column="24" TopLine="63"/>
+        <Filename Value="ureceive.pas"/>
+        <Caret Line="71" TopLine="55"/>
       </Position20>
       <Position21>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="79" Column="52" TopLine="63"/>
+        <Filename Value="srcmain.pas"/>
+        <Caret Line="601" Column="2" TopLine="569"/>
       </Position21>
       <Position22>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="83" Column="75" TopLine="69"/>
+        <Filename Value="ureceive.pas"/>
+        <Caret Line="53" Column="68" TopLine="51"/>
       </Position22>
       <Position23>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="52" Column="46" TopLine="37"/>
+        <Filename Value="ureceive.pas"/>
+        <Caret Line="52" Column="68" TopLine="50"/>
       </Position23>
       <Position24>
-        <Filename Value="FreeCad.pas"/>
-        <Caret Line="368" TopLine="343"/>
+        <Filename Value="ureceive.pas"/>
+        <Caret Line="81" TopLine="26"/>
       </Position24>
       <Position25>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="82" Column="44" TopLine="70"/>
+        <Filename Value="ureceive.pas"/>
+        <Caret Line="36" TopLine="27"/>
       </Position25>
       <Position26>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="203" Column="30" TopLine="186"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="146" Column="46" TopLine="121"/>
       </Position26>
       <Position27>
-        <Filename Value="srcmain.pas"/>
-        <Caret Line="440" Column="55" TopLine="422"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="192" Column="32" TopLine="160"/>
       </Position27>
       <Position28>
-        <Filename Value="SetFCparms.pas"/>
-        <Caret Line="260" Column="42" TopLine="122"/>
+        <Filename Value="FreeCad.pas"/>
+        <Caret Line="275" Column="33" TopLine="243"/>
       </Position28>
       <Position29>
         <Filename Value="SetFCparms.pas"/>
-        <Caret Line="122" Column="27" TopLine="113"/>
+        <Caret Line="176" Column="84" TopLine="138"/>
       </Position29>
       <Position30>
         <Filename Value="SetFCparms.pas"/>
-        <Caret Line="87" Column="2" TopLine="71"/>
+        <Caret Line="107" Column="94" TopLine="91"/>
       </Position30>
     </JumpHistory>
   </ProjectOptions>
@@ -483,11 +589,6 @@
       <IncludeFiles Value="$(ProjOutDir)"/>
       <UnitOutputDirectory Value="$(ProjPath)\lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
-    <Parsing>
-      <SyntaxOptions>
-        <UseAnsiStrings Value="False"/>
-      </SyntaxOptions>
-    </Parsing>
     <CodeGeneration>
       <TargetCPU Value="x86_64"/>
       <TargetOS Value="win64"/>

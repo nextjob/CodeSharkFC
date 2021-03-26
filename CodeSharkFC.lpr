@@ -30,7 +30,8 @@ uses
   Interfaces, // this includes the LCL widgetset
   Forms
   { you can add units after this }, srcmain, FindReplaceDialog, editoroptions,
-  RunTimeTypeInfoControls, Printer4Lazarus, FreeCad, SetFCparms, SetTool, About;
+  RunTimeTypeInfoControls, Printer4Lazarus, FreeCad, SetFCparms, SetTool, About,
+  EditColors, LazSerialPort, uReceive, uSend;
 
 {$R *.res}
 
@@ -42,6 +43,9 @@ begin
   Application.CreateForm(TSetFCparmsFrm, SetFCparmsFrm);
   Application.CreateForm(TSetToolFRM, SetToolFRM);
   Application.CreateForm(TAboutFrm, AboutFrm);
+  Application.CreateForm(TFrmColors, FrmColors);
+  Application.CreateForm(TfrmReceive, frmReceive);
+  Application.CreateForm(TfrmSend, frmSend);
   Application.Run;
 end.
 

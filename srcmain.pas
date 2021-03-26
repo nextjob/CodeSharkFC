@@ -1,4 +1,32 @@
-{ CodeSharkFC editor portion based on:
+{
+CodeSharkFC
+
+This is free and unencumbered software released into the public domain.
+
+Anyone is free to copy, modify, publish, use, compile, sell, or
+distribute this software, either in source code form or as a compiled
+binary, for any purpose, commercial or non-commercial, and by any
+means.
+
+In jurisdictions that recognize copyright laws, the author or authors
+of this software dedicate any and all copyright interest in the
+software to the public domain. We make this dedication for the benefit
+of the public at large and to the detriment of our heirs and
+successors. We intend this dedication to be an overt act of
+relinquishment in perpetuity of all present and future rights to this
+software under copyright law.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+For more information, please refer to <https://unlicense.org>
+
+CodeSharkFC editor portion based on:
 
 SynEdit Plus
 
@@ -35,10 +63,11 @@ unit srcmain;
 interface
 
 uses
-  Classes, SysUtils, lazfileutils, FileUtil, LResources, Forms, Controls, Graphics, Dialogs, Menus,
-  ComCtrls, SynEdit, SynHighlighterAny, StdCtrls, Buttons,
+  Classes, SysUtils, lazfileutils, FileUtil, LResources, Forms, Controls,
+  Graphics, Dialogs, Menus,
+  ComCtrls, SynEdit, SynHighlighterAny, StdCtrls, Buttons, ExtCtrls,
   SynEditTypes, FindReplaceDialog,
-  SourcePrinter, eventlog, editoroptions, LazUTF8, FreeCad;
+  SourcePrinter, eventlog, editoroptions, LazUTF8, FreeCad, ugcodehl, LazSerial;
 
 type
 
@@ -47,6 +76,14 @@ type
   TfrmMain = class(TForm)
     AutoCompleteBox: TComboBox;
     Logger: TEventLog;
+    MenuItem1: TMenuItem;
+    mnuTools: TMenuItem;
+    mnuPlugIns: TMenuItem;
+    mnuConfgurePort: TMenuItem;
+    mnuSend: TMenuItem;
+    mnuReceive: TMenuItem;
+    mnuHighLighter: TMenuItem;
+    mnuGutter: TMenuItem;
     MnuContents: TMenuItem;
     MnuAbout: TMenuItem;
     MnuFCRun: TMenuItem;
@@ -77,13 +114,11 @@ type
     mnuInsertFilename: TMenuItem;
     mnuInsertTmestamp: TMenuItem;
     mnuInsert: TMenuItem;
-    mnuCodeFolding: TMenuItem;
     mnuDeleteSelection: TMenuItem;
     mnuStatusBar: TMenuItem;
     mnuToolbar: TMenuItem;
     mnuHelp: TMenuItem;
     mnuSettings: TMenuItem;
-    mnuView: TMenuItem;
     mnuSelectAll: TMenuItem;
     mnuPaste: TMenuItem;
     mnuCopy: TMenuItem;
@@ -108,6 +143,7 @@ type
     btnRedo: TSpeedButton;
     btnFind: TSpeedButton;
     btnReplace: TSpeedButton;
+    Serial: TLazSerial;
     SpeedButton13: TSpeedButton;
     SpeedButton14: TSpeedButton;
     btnOpen: TSpeedButton;
@@ -128,9 +164,13 @@ type
     procedure FormDestroy(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure MnuAboutClick(Sender: TObject);
-    procedure MnuContentsClick(Sender: TObject);
+    procedure mnuConfgurePortClick(Sender: TObject);
     procedure MnuFCRunClick(Sender: TObject);
     procedure MnuFCSettingsClick(Sender: TObject);
+    procedure mnuGutterClick(Sender: TObject);
+    procedure mnuHighLighterClick(Sender: TObject);
+    procedure mnuReceiveClick(Sender: TObject);
+    procedure mnuSendClick(Sender: TObject);
 
     procedure mnuUndoClick(Sender: TObject);
     procedure mnuPrintClick(Sender: TObject);
@@ -146,7 +186,6 @@ type
     procedure mnuRereadClick(Sender: TObject);
     procedure mnyEditorSettingsClick(Sender: TObject);
     procedure mnuDeleteSelectionClick(Sender: TObject);
-    procedure mnuCodeFoldingClick(Sender: TObject);
     procedure mnuPasteClick(Sender: TObject);
     procedure mnuToolbarClick(Sender: TObject);
     procedure mnuStatusBarClick(Sender: TObject);
@@ -161,40 +200,45 @@ type
     procedure mnuSelectAllClick(Sender: TObject);
     procedure mnuFindClick(Sender: TObject);
     procedure mnuFindNextClick(Sender: TObject);
+    procedure SerialRxData(Sender: TObject);
     procedure SynEditChange(Sender: TObject);
     procedure cboQuickSearchChange(Sender: TObject);
 
   private
     FileName: string;
     List: TStringList;
+    FSynGCodeHl: TGCodeHl;
     procedure SetEditorOptions;
+    procedure SetHLcolors;
     procedure AddLastModify;
   public
     { public declarations }
-     AppDataPath: string;
+    AppDataPath: string;
   end;
-
-var
-  frmMain: TfrmMain;
-  MyFreeCADFrm : TFreeCadFrm;
-  // flags set in SetFCparms, read from CodeSharkFC.ini
-  LicenseRead: Boolean;      // if set do not show about screen on startup
-  LicenseShown : Boolean;    // have we shown the license (about) at startup?
 
 const
   MyAppName = 'CodeSharkFC';
-  CurVersion = '0.0';
-   //  custom script files found in AppData (C:\Users\**username**\AppData\Local\CodeSharkFC)
-  StartupScript  = 'StartupScript.py';
+  CurVersion = '0.01b';
+  //  custom script files found in AppData (C:\Users\**username**\AppData\Local\CodeSharkFC)
+  StartupScript = 'StartupScript.py';
   PanelViewScript = 'PanelViewScript.py';
   ObserverScript = 'ObserverScript.py';
   ShutdownScript = 'ShutdownScript.py';
   FileNameUndefined = 'Undefined';
 
+
+var
+  frmMain: TfrmMain;
+  MyFreeCADFrm: TFreeCadFrm;
+  // flags set in SetFCparms, read from CodeSharkFC.ini
+  LicenseRead: boolean;      // if set do not show about screen on startup
+  LicenseShown: boolean;    // have we shown the license (about) at startup?
+
+
 implementation
 
 uses
- commandline,SetFCparms, About;
+  commandline, SetFCparms, About, EditColors, uReceive, uSend;
 
 {$R *.lfm}
 
@@ -221,12 +265,12 @@ end;
 
 procedure TfrmMain.SetEditorOptions;
 begin
-  SynEdit.Options     := SynEditOptionsForm.Options;
-  SynEdit.Options2    := SynEditOptionsForm.Options2;
-  SynEdit.MaxUndo     := SynEditOptionsForm.UndoLimit;
+  SynEdit.Options := SynEditOptionsForm.Options;
+  SynEdit.Options2 := SynEditOptionsForm.Options2;
+  SynEdit.MaxUndo := SynEditOptionsForm.UndoLimit;
   SynEdit.BlockIndent := SynEditOptionsForm.BlockIndent;
-  SynEdit.TabWidth    := SynEditOptionsForm.TabWidth;
-  SynEdit.RightEdge   := SynEditOptionsForm.RightMargin;
+  SynEdit.TabWidth := SynEditOptionsForm.TabWidth;
+  SynEdit.RightEdge := SynEditOptionsForm.RightMargin;
 end;
 
 procedure TfrmMain.AddLastModify;
@@ -307,11 +351,6 @@ begin
   SynEdit.ClearSelection;
 end;
 
-procedure TfrmMain.mnuCodeFoldingClick(Sender: TObject);
-begin
-  mnuCodeFolding.Checked := not mnuCodeFolding.Checked;
-  //SynEdit.Gutter.ShowCodeFolding:=mnuCodeFolding.Checked;
-end;
 
 procedure TfrmMain.mnuPasteClick(Sender: TObject);
 begin
@@ -421,21 +460,23 @@ begin
   FileName := 'Undefined';
   List := TStringList.Create;
 
-//  AppDataPath  := ExtractFilePath(ParamStr(0));
+  //  AppDataPath  := ExtractFilePath(ParamStr(0));
 
-  AppDataPath  := ExtractFilePath(ChompPathDelim(GetAppConfigDirUTF8(False)));
+  AppDataPath := ExtractFilePath(ChompPathDelim(GetAppConfigDirUTF8(False)));
 
   AppDataPath := AppDataPath + MyAppName;
   // does the application's data directory exist?
   if not DirectoryExists(AppDataPath) then
-  Begin
+  begin
     ShowMessage(AppDataPath + ' Does not exist, Creating');
     CreateDir(AppDataPath);
-  End;
-//ShowMessage('AppDataPath: ' + AppDataPath);
+  end;
+  //ShowMessage('AppDataPath: ' + AppDataPath);
   LicenseShown := False;
-// nil our soon to be created FreeCad Interface Dialog
-   MyFreeCADFrm := nil;
+  // nil our soon to be created FreeCad Interface Dialog
+  MyFreeCADFrm := nil;
+  // Create the highlighter
+  FSynGCodeHl := TGcodeHl.Create(Self);
 end;
 
 procedure TfrmMain.FormDestroy(Sender: TObject);
@@ -461,8 +502,9 @@ end;
 procedure TfrmMain.FormActivate(Sender: TObject);
 begin
   SetFCparmsFrm.LoadIni;
-  if Not(LicenseShown) then
-    If Not(LicenseRead) then AboutFrm.ShowModal;
+  if not (LicenseShown) then
+    if not (LicenseRead) then
+      AboutFrm.ShowModal;
   LicenseShown := True;
 end;
 
@@ -476,6 +518,14 @@ begin
   end;
   Caption := ExtractFileName(FileName) + ' - CodeSharkFC';
   SetEditorOptions;
+  //  set our version info
+  AboutFrm.lblVer.Caption := CurVersion;
+  // are we highlighting?
+  if FrmColors.CBHighlight.Checked then
+    SynEdit.Highlighter := FSynGCodeHl
+  else
+    SynEdit.Highlighter := nil;
+  SynEdit.Invalidate;
 end;
 
 procedure TfrmMain.MnuAboutClick(Sender: TObject);
@@ -483,9 +533,9 @@ begin
   AboutFrm.ShowModal;
 end;
 
-procedure TfrmMain.MnuContentsClick(Sender: TObject);
+procedure TfrmMain.mnuConfgurePortClick(Sender: TObject);
 begin
-
+  Serial.ShowSetupDialog;
 end;
 
 procedure TfrmMain.MnuFCRunClick(Sender: TObject);
@@ -505,16 +555,17 @@ begin
 
 }
   if MyFreeCADFrm = nil then
-  Begin
+  begin
     SetFCparmsFrm.LoadIni; // make sure we have the setup info loaded for python
-    MyFreeCADFrm :=TFreeCadFrm.Create(Application);
+    MyFreeCADFrm := TFreeCadFrm.Create(Application);
     try
-     MyFreeCADFrm.Show;
-    Except
-    on E : Exception do
-      ShowMessage(E.ClassName+' error raised on MyFreeCAD form creation, with message : '+E.Message);
+      MyFreeCADFrm.Show;
+    except
+      on E: Exception do
+        ShowMessage(E.ClassName +
+          ' error raised on MyFreeCAD form creation, with message : ' + E.Message);
     end;
-  End
+  end
   else
     MyFreeCADFrm.Show;
 end;
@@ -522,6 +573,39 @@ end;
 procedure TfrmMain.MnuFCSettingsClick(Sender: TObject);
 begin
   SetFCparmsFrm.ShowModal;
+end;
+
+procedure TfrmMain.mnuGutterClick(Sender: TObject);
+begin
+  mnuGutter.Checked := not mnuGutter.Checked;
+  Synedit.Gutter.Visible := mnuGutter.Checked;
+  SynEdit.Invalidate;
+end;
+
+procedure TfrmMain.mnuHighLighterClick(Sender: TObject);
+begin
+  FrmColors.ShowModal;
+  if FrmColors.ModalResult = mrOk then
+  begin
+    SetHLcolors;
+    if FrmColors.CBHighlight.Checked then
+      SynEdit.Highlighter := FSynGCodeHl
+    else
+      SynEdit.Highlighter := nil;
+    SynEdit.Invalidate;
+  end;
+end;
+
+procedure TfrmMain.mnuReceiveClick(Sender: TObject);
+begin
+ if SynEdit.Lines.Count > 0 then
+     mnuNewClick(self);
+ frmReceive.ShowModal;
+end;
+
+procedure TfrmMain.mnuSendClick(Sender: TObject);
+begin
+  frmSend.ShowModal;
 end;
 
 
@@ -617,7 +701,8 @@ end;
 
 procedure TfrmMain.mnuSaveAsClick(Sender: TObject);
 begin
-  if FileName = FileNameUndefined then FileName := '';
+  if FileName = FileNameUndefined then
+    FileName := '';
   try
     SaveDialog.FileName := FileName;
     if SaveDialog.Execute then
@@ -675,9 +760,41 @@ begin
     LazFindReplaceDialog.Options - [ssoEntireScope]);
 end;
 
+procedure TfrmMain.SerialRxData(Sender: TObject);
+var
+  Str: string;
+begin
+  //  Serial.SynSer.ConvertLineEnd:=;
+  Str := Serial.ReadData;
+
+  // We test Str length because SerialRxData is being called with not data to read
+  // Could be an issue with USB serial device, not sure???
+  if Length(Str) > 0 then
+  begin
+    SynEdit.Lines.BeginUpdate;
+    SynEdit.Lines.Add(Str);
+    SynEdit.Lines.EndUpdate;
+    frmReceive.TimeoutCount := 0;  //Reset last recv timeout count
+    Inc(frmReceive.RecvCount);
+  end;
+  frmReceive.edtTimeOut.Text := IntToStr(frmReceive.TimeoutCount);
+  frmReceive.edtLnsRecd.Text := IntTOStr(frmReceive.RecvCount);
+end;
+
 procedure TfrmMain.SynEditChange(Sender: TObject);
 begin
   Caption := '*' + ExtractFileName(FileName) + ' - CodeSharkFC';
+end;
+
+procedure TfrmMain.SetHLColors;
+begin
+  FSynGCodeHl.G123Attri.Background := FrmColors.CCmboG1.Selected;
+  FSynGCodeHl.GAttri.Background := FrmColors.CCmboOtherG.Selected;
+  FSynGCodeHl.MAttri.Background := FrmColors.CCmboM.Selected;
+  FSynGCodeHl.OAttri.Background := FrmColors.CCmboO.Selected;
+  FSynGCodeHl.TAttri.Background := FrmColors.CCmboT.Selected;
+  FSynGCodeHl.ZAttri.Background := FrmColors.CCmboZ.Selected;
+  FSynGCodeHl.SpecialAttri.Background := FrmColors.CCmboCom.Selected;
 end;
 
 procedure TfrmMain.cboQuickSearchChange(Sender: TObject);
@@ -689,4 +806,3 @@ end;
 initialization
 
 end.
-

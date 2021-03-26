@@ -1,20 +1,80 @@
 object AboutFrm: TAboutFrm
-  Left = 689
-  Height = 476
-  Top = 520
+  Left = 2704
+  Height = 432
+  Top = 350
   Width = 503
   Caption = 'About'
-  ClientHeight = 476
+  ClientHeight = 432
   ClientWidth = 503
-  OnActivate = FormActivate
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.6.0'
-  object Aboutlbl: TLabel
-    Left = 16
+  LCLVersion = '2.0.12.0'
+  object Memo1: TMemo
+    Left = 24
+    Height = 392
+    Top = 32
+    Width = 457
+    Lines.Strings = (
+      'This is free and unencumbered software released into the public domain.'
+      ''
+      'Anyone is free to copy, modify, publish, use, compile, sell, or'
+      'distribute this software, either in source code form or as a compiled'
+      'binary, for any purpose, commercial or non-commercial, and by any'
+      'means.'
+      ''
+      'In jurisdictions that recognize copyright laws, the author or authors'
+      'of this software dedicate any and all copyright interest in the'
+      'software to the public domain. We make this dedication for the benefit'
+      'of the public at large and to the detriment of our heirs and'
+      'successors. We intend this dedication to be an overt act of'
+      'relinquishment in perpetuity of all present and future rights to this'
+      'software under copyright law.'
+      ''
+      'THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,'
+      'EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF'
+      'MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.'
+      'IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR'
+      'OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,'
+      'ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR'
+      'OTHER DEALINGS IN THE SOFTWARE.'
+      ''
+      'For more information, please refer to <https://unlicense.org>'
+      ''
+      'This Program Is Built With and or utilizes the following modules / code:'
+      '  '
+      '  SynEdit Plus,   Copyright (C) 2009 Dariusz Rorat drorat1@o2.pl'
+      '  https://sourceforge.net/projects/syneditplus/'
+      ''
+      '  LazSerial https://github.com/JurassicPork/TLazSerial'
+      '  or from Lazarus On-line Package Manager'
+      ''
+      '  Python4Lazarus https://github.com/Alexey-T/Python-for-Lazarus'
+      '  or from Lazarus On-line Package Manager'
+      '  ( Fork of Python4Delphi )'
+      '  Python4delphi, Source Code Can Be Found At:'
+      '  https://github.com/pyscripter/python4delphi'
+      ''
+      '  PathKurveUtils.py & Pathselection.py , Copyright (c) 2015 Dan Falck <ddfalck@gmail.com> '
+      '  https://github.com/FreeCAD/FreeCAD   '
+    )
+    ReadOnly = True
+    ScrollBars = ssAutoBoth
+    TabOrder = 0
+    WordWrap = False
+  end
+  object Label1: TLabel
+    Left = 24
     Height = 15
-    Top = 24
-    Width = 57
-    Caption = 'About Text'
+    Top = 8
+    Width = 119
+    Caption = 'CodeShartkFC Version '
+    ParentColor = False
+  end
+  object lblVer: TLabel
+    Left = 160
+    Height = 15
+    Top = 8
+    Width = 21
+    Caption = '0.00'
     ParentColor = False
   end
 end

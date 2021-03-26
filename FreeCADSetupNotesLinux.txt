@@ -1,0 +1,35 @@
+Linux Mint Install
+
+Install on new build:
+
+sudo add-apt-repository ppa:freecad-maintainers/freecad-stable
+sudo apt update
+sudo apt install freecad
+
+
+On Mint (Ubuntu) we need to create these links: rem ln -s source_file symbolic_link
+
+sudo ln -s /usr/lib/freecad/Mod /usr/lib/freecad-python3/Mod
+sudo ln -s /usr/lib/freecad/Ext /usr/lib/freecad-python3/Ext
+
+There is also the following issue with the python package on Linux Mint 20.04:
+There is no libpython3.8m.so, only libpython3.8.so  https://docs.python.org/3.8/whatsnew/3.8.html 
+Python4Delphi has the library names hard coded, must create the following link until this is resolved:
+
+cd /usr/lib/python3.8/config-3.8-x86_64-linux-gnu
+sudo ln -s ../../x86_64-linux-gnu/libpython3.8.so.1 libpython3.8m.so
+
+We need these links because when executing Application startup (import FreeCAD) from an external python interpreter,
+AppHomePath is resolved as /usr/lib/freecad-python3 (which is the location of FreeCAD.so).
+ (See Application.cpp & FreeCADInit.py in source)
+This results in FreeCAD.getHomePath as returning /usr/lib/freecad-python3 and setting the Mod dir as /usr/lib/freecad-python3/Mod.
+The correct location is /usr/lib/freecad/Mod, adding these links resolves this issue.
+
+
+Cannot open /dev/ttyS0: Permission denied                                                      
+sudo usermod -a -G tty $USER
+sudo usermod -a -G dialout $USER
+may need to log out / back in
+or
+
+sudo chmod 666 /dev/ttyS0  (will require every login)

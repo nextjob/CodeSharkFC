@@ -1,177 +1,25 @@
 object SetToolFRM: TSetToolFRM
-  Left = 1079
-  Height = 528
-  Top = 181
-  Width = 194
+  Left = 2659
+  Height = 504
+  Top = 237
+  Width = 260
   Caption = 'Set Tool'
-  ClientHeight = 528
-  ClientWidth = 194
+  ClientHeight = 504
+  ClientWidth = 260
   Color = clBtnFace
   Font.Color = clWindowText
   Font.Height = -11
   Font.Name = 'Tahoma'
   Position = poOwnerFormCenter
-  LCLVersion = '2.0.6.0'
-  object Panel1: TPanel
-    Left = 96
-    Height = 80
-    Top = 16
-    Width = 97
-    Alignment = taLeftJustify
-    ClientHeight = 80
-    ClientWidth = 97
-    TabOrder = 0
-    object rbOnLine: TRadioButton
-      Left = 8
-      Height = 19
-      Top = 24
-      Width = 56
-      Caption = 'On Line'
-      Checked = True
-      TabOrder = 0
-      TabStop = True
-    end
-    object rbRightofLine: TRadioButton
-      Left = 8
-      Height = 19
-      Top = 40
-      Width = 80
-      Caption = 'Right of Line'
-      TabOrder = 1
-    end
-    object rbLeftofLine: TRadioButton
-      Left = 8
-      Height = 19
-      Top = 56
-      Width = 74
-      Caption = 'Left of Line'
-      TabOrder = 2
-    end
-    object Label1: TLabel
-      Left = 8
-      Height = 13
-      Top = 8
-      Width = 60
-      Caption = 'Tool Position'
-      ParentColor = False
-    end
-  end
-  object RadiusEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 120
-    Width = 81
-    EditLabel.Height = 13
-    EditLabel.Width = 81
-    EditLabel.Caption = 'Tool Radius'
-    EditLabel.ParentColor = False
-    TabOrder = 1
-    Text = '1.00'
-  end
-  object VertFeedEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 168
-    Width = 81
-    EditLabel.Height = 13
-    EditLabel.Width = 81
-    EditLabel.Caption = 'Vert Feed Rate'
-    EditLabel.ParentColor = False
-    TabOrder = 2
-    Text = '0'
-  end
-  object HorzFeedEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 216
-    Width = 81
-    EditLabel.Height = 13
-    EditLabel.Width = 81
-    EditLabel.Caption = 'Horz Feed Rate'
-    EditLabel.ParentColor = False
-    TabOrder = 3
-    Text = '0'
-  end
-  object OffsetExtraEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 264
-    Width = 81
-    EditLabel.Height = 13
-    EditLabel.Width = 81
-    EditLabel.Caption = 'Offset Extra '
-    EditLabel.ParentColor = False
-    TabOrder = 4
-    Text = '0'
-  end
-  object RapidSafeSpaceEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 312
-    Width = 98
-    EditLabel.Height = 13
-    EditLabel.Width = 98
-    EditLabel.Caption = 'Rapid Safety Space'
-    EditLabel.ParentColor = False
-    TabOrder = 5
-    Text = '0'
-  end
-  object ClearanceEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 360
-    Width = 121
-    EditLabel.Height = 13
-    EditLabel.Width = 121
-    EditLabel.Caption = 'Clearance '
-    EditLabel.ParentColor = False
-    TabOrder = 6
-    Text = '0'
-  end
-  object StartDepthEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 408
-    Width = 121
-    EditLabel.Height = 13
-    EditLabel.Width = 121
-    EditLabel.Caption = 'Start Depth'
-    EditLabel.ParentColor = False
-    TabOrder = 7
-    Text = '0'
-  end
-  object StepdownEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 456
-    Width = 121
-    EditLabel.Height = 13
-    EditLabel.Width = 121
-    EditLabel.Caption = 'Step down'
-    EditLabel.ParentColor = False
-    TabOrder = 8
-    Text = '.001'
-  end
-  object FinalDepthEdt: TLabeledEdit
-    Left = 8
-    Height = 21
-    Top = 504
-    Width = 121
-    EditLabel.Height = 13
-    EditLabel.Width = 121
-    EditLabel.Caption = 'Final Depth'
-    EditLabel.ParentColor = False
-    TabOrder = 9
-    Text = '-.001'
-  end
+  LCLVersion = '2.0.12.0'
   object Panel2: TPanel
-    Left = 0
+    Left = 144
     Height = 80
     Top = 16
-    Width = 90
+    Width = 98
     ClientHeight = 80
-    ClientWidth = 90
-    TabOrder = 10
+    ClientWidth = 98
+    TabOrder = 1
     object rbCCW: TRadioButton
       Left = 8
       Height = 19
@@ -204,6 +52,240 @@ object SetToolFRM: TSetToolFRM
       Width = 65
       Caption = 'Tool Direction'
       ParentColor = False
+    end
+  end
+  object Panel4: TPanel
+    Left = 8
+    Height = 485
+    Top = 11
+    Width = 120
+    ClientHeight = 485
+    ClientWidth = 120
+    TabOrder = 0
+    object Label3: TLabel
+      Left = 8
+      Height = 13
+      Top = 8
+      Width = 108
+      Caption = 'PathKurve Parameters'
+      ParentColor = False
+    end
+    object Panel1: TPanel
+      Left = 15
+      Height = 80
+      Top = 24
+      Width = 97
+      Alignment = taLeftJustify
+      ClientHeight = 80
+      ClientWidth = 97
+      TabOrder = 0
+      object rbOnLine: TRadioButton
+        Left = 8
+        Height = 19
+        Top = 24
+        Width = 56
+        Caption = 'On Line'
+        Checked = True
+        TabOrder = 0
+        TabStop = True
+      end
+      object rbRightofLine: TRadioButton
+        Left = 8
+        Height = 19
+        Top = 40
+        Width = 80
+        Caption = 'Right of Line'
+        TabOrder = 1
+      end
+      object rbLeftofLine: TRadioButton
+        Left = 8
+        Height = 19
+        Top = 56
+        Width = 74
+        Caption = 'Left of Line'
+        TabOrder = 2
+      end
+      object Label1: TLabel
+        Left = 8
+        Height = 13
+        Top = 8
+        Width = 60
+        Caption = 'Tool Position'
+        ParentColor = False
+      end
+    end
+    object RadiusEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 128
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Tool Radius'
+      EditLabel.ParentColor = False
+      TabOrder = 1
+      Text = '1.00'
+      OnExit = GenericEditExitP
+    end
+    object VertFeedEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 168
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Vert Feed Rate'
+      EditLabel.ParentColor = False
+      TabOrder = 2
+      Text = '0'
+      OnExit = GenericEditExitP
+    end
+    object HorzFeedEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 208
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Horz Feed Rate'
+      EditLabel.ParentColor = False
+      TabOrder = 3
+      Text = '0'
+      OnExit = GenericEditExitP
+    end
+    object OffsetExtraEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 248
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Offset Extra '
+      EditLabel.ParentColor = False
+      TabOrder = 4
+      Text = '0'
+      OnExit = GenericEditExitP
+    end
+    object RapidSafeSpaceEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 288
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Rapid Safety Space'
+      EditLabel.ParentColor = False
+      TabOrder = 5
+      Text = '0'
+      OnExit = GenericEditExitP
+    end
+    object ClearanceEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 328
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Clearance '
+      EditLabel.ParentColor = False
+      TabOrder = 6
+      Text = '0'
+      OnExit = GenericEditExitP
+    end
+    object StartDepthEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 368
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Start Depth'
+      EditLabel.ParentColor = False
+      TabOrder = 7
+      Text = '0'
+      OnExit = GenericEditExit
+    end
+    object StepdownEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 408
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Step down'
+      EditLabel.ParentColor = False
+      TabOrder = 8
+      Text = '.001'
+      OnExit = GenericEditExitP
+    end
+    object FinalDepthEdt: TLabeledEdit
+      Left = 15
+      Height = 21
+      Top = 456
+      Width = 95
+      EditLabel.Height = 13
+      EditLabel.Width = 95
+      EditLabel.Caption = 'Final Depth'
+      EditLabel.ParentColor = False
+      TabOrder = 9
+      Text = '-.001'
+      OnExit = GenericEditExit
+    end
+  end
+  object Panel3: TPanel
+    Left = 136
+    Height = 160
+    Top = 112
+    Width = 106
+    ClientHeight = 160
+    ClientWidth = 106
+    TabOrder = 2
+    object Label4: TLabel
+      Left = 8
+      Height = 13
+      Top = 8
+      Width = 75
+      Caption = 'FromShape XYZ'
+      ParentColor = False
+    end
+    object StartXEdt: TLabeledEdit
+      Left = 8
+      Height = 21
+      Top = 48
+      Width = 80
+      EditLabel.Height = 13
+      EditLabel.Width = 80
+      EditLabel.Caption = 'Start X'
+      EditLabel.ParentColor = False
+      TabOrder = 0
+      Text = '0'
+      OnExit = GenericEditExit
+    end
+    object StartYEdt: TLabeledEdit
+      Left = 8
+      Height = 21
+      Top = 88
+      Width = 80
+      EditLabel.Height = 13
+      EditLabel.Width = 80
+      EditLabel.Caption = 'Start Y'
+      EditLabel.ParentColor = False
+      TabOrder = 1
+      Text = '0'
+      OnExit = GenericEditExit
+    end
+    object StartZEdt: TLabeledEdit
+      Left = 8
+      Height = 21
+      Top = 128
+      Width = 80
+      EditLabel.Height = 13
+      EditLabel.Width = 80
+      EditLabel.Caption = 'Start Z'
+      EditLabel.ParentColor = False
+      TabOrder = 2
+      Text = '0'
+      OnExit = GenericEditExit
     end
   end
 end

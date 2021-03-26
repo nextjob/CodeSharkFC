@@ -1,12 +1,12 @@
 object SynEditOptionsForm: TSynEditOptionsForm
-  Left = 501
-  Height = 468
-  Top = 491
+  Left = 2737
+  Height = 482
+  Top = 257
   Width = 493
   HorzScrollBar.Page = 492
   VertScrollBar.Page = 467
   Caption = 'Editor options'
-  ClientHeight = 468
+  ClientHeight = 482
   ClientWidth = 493
   Font.CharSet = EASTEUROPE_CHARSET
   Font.Color = clBlack
@@ -17,14 +17,14 @@ object SynEditOptionsForm: TSynEditOptionsForm
   OnCreate = FormCreate
   OnShow = FormShow
   Position = poDesktopCenter
-  LCLVersion = '1.8.4.0'
+  LCLVersion = '2.0.12.0'
   object PageControl: TPageControl
     Left = 0
     Height = 472
     Top = 0
     Width = 491
-    ActivePage = TabSheet5
-    TabIndex = 3
+    ActivePage = TabSheet2
+    TabIndex = 2
     TabOrder = 0
     object TabSheet1: TTabSheet
       Caption = 'Common'
@@ -125,7 +125,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox1: TCheckBox
         Left = 16
-        Height = 17
+        Height = 19
         Top = 34
         Width = 106
         Caption = 'Undo after saving'
@@ -133,7 +133,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox2: TCheckBox
         Left = 16
-        Height = 17
+        Height = 19
         Top = 50
         Width = 76
         Caption = 'Undo group'
@@ -157,7 +157,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox3: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 98
         Width = 120
         Caption = 'Scroll past end of file'
@@ -165,7 +165,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox4: TCheckBox
         Left = 162
-        Height = 17
+        Height = 19
         Top = 114
         Width = 112
         Caption = 'Scroll past half side'
@@ -173,7 +173,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox5: TCheckBox
         Left = 162
-        Height = 17
+        Height = 19
         Top = 98
         Width = 111
         Caption = 'Scroll past one less'
@@ -197,7 +197,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox6: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 162
         Width = 81
         Caption = 'Auto indents'
@@ -205,7 +205,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox7: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 178
         Width = 103
         Caption = 'Tab indents block'
@@ -234,7 +234,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox8: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 162
         Width = 72
         Caption = 'Smart tabs'
@@ -242,7 +242,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox9: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 178
         Width = 92
         Caption = 'Tabs to spaces'
@@ -266,7 +266,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox10: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 274
         Width = 126
         Caption = 'Keep cursor X position'
@@ -274,7 +274,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox11: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 290
         Width = 130
         Caption = 'Non changeable cursor'
@@ -282,7 +282,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox12: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 306
         Width = 119
         Caption = 'Always visible cursor'
@@ -290,7 +290,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox13: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 322
         Width = 124
         Caption = 'Caret past end of line'
@@ -298,7 +298,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox14: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 274
         Width = 123
         Caption = 'Cursor skips selection'
@@ -306,7 +306,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox15: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 290
         Width = 102
         Caption = 'Cursor skips tabs'
@@ -314,7 +314,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox16: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 306
         Width = 157
         Caption = 'Home jumps to nearest start'
@@ -322,7 +322,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox17: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 322
         Width = 143
         Caption = 'End jumps to nearest end'
@@ -346,7 +346,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox18: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 370
         Width = 73
         Caption = 'Fixed block'
@@ -354,7 +354,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox19: TCheckBox
         Left = 253
-        Height = 17
+        Height = 19
         Top = 370
         Width = 100
         Caption = 'Overwrite blocks'
@@ -362,7 +362,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
       object CheckBox25: TCheckBox
         Left = 6
-        Height = 17
+        Height = 19
         Top = 114
         Width = 122
         Caption = 'Scroll past end of line'
@@ -370,7 +370,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       end
     end
     object TabSheet4: TTabSheet
-      Caption = 'Different'
+      Caption = 'Options'
       ClientHeight = 446
       ClientWidth = 483
       object CheckGroup1: TCheckGroup
@@ -398,7 +398,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
           'Find text at the cursot'
           'Copy word on copy none'
           'Copy/paste the information collapse'
-          'Szow tab numbers in notebook'
+          'Show tab numbers in notebook'
           'Extended Home key'
           'Extended End key'
           'Smart tabs'
@@ -472,20 +472,6 @@ object SynEditOptionsForm: TSynEditOptionsForm
         Caption = '...'
         OnClick = SpeedButton1Click
       end
-      object Label4: TLabel
-        Left = 4
-        Height = 14
-        Top = 186
-        Width = 21
-        Caption = 'Size'
-        Font.CharSet = EASTEUROPE_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        ParentColor = False
-        ParentFont = False
-      end
       object GroupBox1: TGroupBox
         Left = 4
         Height = 120
@@ -497,7 +483,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
         TabOrder = 0
         object CheckBox30: TCheckBox
           Left = 6
-          Height = 17
+          Height = 19
           Top = 8
           Width = 81
           Caption = 'Show margin'
@@ -505,7 +491,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
         end
         object CheckBox31: TCheckBox
           Left = 6
-          Height = 17
+          Height = 19
           Top = 32
           Width = 84
           Caption = 'Show iconbar'
@@ -513,7 +499,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
         end
         object CheckBox32: TCheckBox
           Left = 6
-          Height = 17
+          Height = 19
           Top = 56
           Width = 109
           Caption = 'Show line numbers'
@@ -573,210 +559,31 @@ object SynEditOptionsForm: TSynEditOptionsForm
         Height = 21
         Top = 155
         Width = 440
-        EditLabel.AnchorSideLeft.Control = txtFont
-        EditLabel.AnchorSideRight.Control = txtFont
-        EditLabel.AnchorSideRight.Side = asrBottom
-        EditLabel.AnchorSideBottom.Control = txtFont
-        EditLabel.Left = 4
         EditLabel.Height = 13
-        EditLabel.Top = 139
         EditLabel.Width = 440
         EditLabel.Caption = 'Font'
         EditLabel.ParentColor = False
         TabOrder = 1
       end
-      object txtSize: TSpinEdit
-        Left = 4
-        Height = 21
-        Top = 206
-        Width = 50
-        TabOrder = 2
-      end
-    end
-    object TabSheet5: TTabSheet
-      Caption = 'Mouse'
-      ClientHeight = 446
-      ClientWidth = 483
-      object Label16: TLabel
-        Left = 10
-        Height = 14
-        Top = 10
-        Width = 39
-        Caption = 'Ogólne'
+      object lblFontColor: TLabel
+        Left = 8
+        Height = 16
+        Top = 208
+        Width = 59
+        Caption = 'Font Color'
         Font.CharSet = EASTEUROPE_CHARSET
         Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
+        Font.Height = -13
+        Font.Name = 'Tahoma'
         Font.Pitch = fpVariable
         Font.Quality = fqDraft
-        Font.Style = [fsBold]
         ParentColor = False
         ParentFont = False
-      end
-      object CheckBox20: TCheckBox
-        Left = 10
-        Height = 17
-        Top = 34
-        Width = 156
-        Caption = 'Hide mouse cursor at writing'
-        TabOrder = 0
-      end
-      object RadioGroup1: TRadioGroup
-        Left = 10
-        Height = 105
-        Top = 66
-        Width = 457
-        AutoFill = True
-        Caption = 'Collector'
-        ChildSizing.LeftRightSpacing = 6
-        ChildSizing.TopBottomSpacing = 6
-        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-        ChildSizing.EnlargeVertical = crsHomogenousChildResize
-        ChildSizing.ShrinkHorizontal = crsScaleChilds
-        ChildSizing.ShrinkVertical = crsScaleChilds
-        ChildSizing.Layout = cclLeftToRightThenTopToBottom
-        ChildSizing.ControlsPerLine = 1
-        ClientHeight = 86
-        ClientWidth = 453
-        Font.CharSet = EASTEUROPE_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        ItemIndex = 0
-        Items.Strings = (
-          'Standard, all activities (trap, rolling up) as you press the mouse button'
-          'Enhanced activity (trap, rewind) the mouse button is released'
-        )
-        ParentFont = False
-        TabOrder = 1
-      end
-      object Label17: TLabel
-        Left = 10
-        Height = 14
-        Top = 178
-        Width = 23
-        Caption = 'Text'
-        Font.CharSet = EASTEUROPE_CHARSET
-        Font.Color = clBlack
-        Font.Height = -11
-        Font.Name = 'MS Sans Serif'
-        Font.Pitch = fpVariable
-        Font.Quality = fqDraft
-        Font.Style = [fsBold]
-        ParentColor = False
-        ParentFont = False
-      end
-      object CheckBox21: TCheckBox
-        Left = 10
-        Height = 17
-        Top = 202
-        Width = 121
-        Caption = 'Alt sets column mode'
-        TabOrder = 2
-      end
-      object CheckBox22: TCheckBox
-        Left = 10
-        Height = 17
-        Top = 218
-        Width = 178
-        Caption = 'Drag the selection (copy / paste)'
-        TabOrder = 3
-      end
-      object CheckBox23: TCheckBox
-        Left = 234
-        Height = 17
-        Top = 202
-        Width = 233
-        Caption = 'The right mouse button causes displacement'
-        TabOrder = 4
-      end
-      object CheckBox24: TCheckBox
-        Left = 234
-        Height = 17
-        Top = 218
-        Width = 156
-        Caption = 'Double-clicking selects a row'
-        TabOrder = 5
-      end
-      object RadioGroup2: TRadioGroup
-        Left = 2
-        Height = 73
-        Top = 242
-        Width = 465
-        AutoFill = True
-        Caption = 'Center key'
-        ChildSizing.LeftRightSpacing = 6
-        ChildSizing.TopBottomSpacing = 6
-        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-        ChildSizing.EnlargeVertical = crsHomogenousChildResize
-        ChildSizing.ShrinkHorizontal = crsScaleChilds
-        ChildSizing.ShrinkVertical = crsScaleChilds
-        ChildSizing.Layout = cclLeftToRightThenTopToBottom
-        ChildSizing.ControlsPerLine = 2
-        ClientHeight = 55
-        ClientWidth = 461
-        Columns = 2
-        ItemIndex = 0
-        Items.Strings = (
-          'insert selection'
-          'jump to implementation'
-          'do nothing'
-        )
-        TabOrder = 6
-      end
-      object RadioGroup3: TRadioGroup
-        Left = 2
-        Height = 73
-        Top = 322
-        Width = 465
-        AutoFill = True
-        Caption = 'Ctrl+Left combination'
-        ChildSizing.LeftRightSpacing = 6
-        ChildSizing.TopBottomSpacing = 6
-        ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
-        ChildSizing.EnlargeVertical = crsHomogenousChildResize
-        ChildSizing.ShrinkHorizontal = crsScaleChilds
-        ChildSizing.ShrinkVertical = crsScaleChilds
-        ChildSizing.Layout = cclLeftToRightThenTopToBottom
-        ChildSizing.ControlsPerLine = 2
-        ClientHeight = 55
-        ClientWidth = 461
-        Columns = 2
-        ItemIndex = 0
-        Items.Strings = (
-          'jump to implementation'
-          'jump to implementation/block end'
-          'do nothing'
-        )
-        TabOrder = 7
-      end
-      object CheckBox26: TCheckBox
-        Left = 234
-        Height = 17
-        Top = 34
-        Width = 134
-        Caption = 'Show Ctrl + mouse links'
-        TabOrder = 8
-      end
-    end
-    object TabSheet3: TTabSheet
-      Caption = 'Other'
-      ClientHeight = 446
-      ClientWidth = 483
-      object CheckBox33: TCheckBox
-        Left = 2
-        Height = 19
-        Top = 18
-        Width = 197
-        Caption = 'Insert last modification date on finish'
-        TabOrder = 0
       end
     end
   end
   object OKButton: TBitBtn
-    Left = 328
+    Left = 264
     Height = 30
     Top = 432
     Width = 75
@@ -810,6 +617,7 @@ object SynEditOptionsForm: TSynEditOptionsForm
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
       FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
     }
+    ModalResult = 1
     OnClick = OKButtonClick
     TabOrder = 1
   end
@@ -854,14 +662,14 @@ object SynEditOptionsForm: TSynEditOptionsForm
   object FontDialog: TFontDialog
     Font.CharSet = EASTEUROPE_CHARSET
     Font.Color = clBlack
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
+    Font.Height = -13
+    Font.Name = 'Courier New'
     Font.Pitch = fpVariable
     Font.Quality = fqDraft
     MinFontSize = 0
     MaxFontSize = 0
     PreviewText = 'To jest tekst'
-    left = 40
-    top = 424
+    Left = 40
+    Top = 424
   end
 end

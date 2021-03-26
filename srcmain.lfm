@@ -1,12 +1,12 @@
 object frmMain: TfrmMain
-  Left = 2804
-  Height = 577
-  Top = 531
+  Left = 2386
+  Height = 679
+  Top = 264
   Width = 753
   HorzScrollBar.Page = 532
   VertScrollBar.Page = 311
   Caption = 'CodeSharkFC'
-  ClientHeight = 557
+  ClientHeight = 659
   ClientWidth = 753
   Font.CharSet = EASTEUROPE_CHARSET
   Font.Color = clBlack
@@ -20,12 +20,12 @@ object frmMain: TfrmMain
   OnCreate = FormCreate
   OnDestroy = FormDestroy
   OnShow = FormShow
-  Position = poDefault
-  LCLVersion = '2.0.6.0'
+  Position = poScreenCenter
+  LCLVersion = '2.0.12.0'
   object StatusBar: TStatusBar
     Left = 0
     Height = 23
-    Top = 534
+    Top = 636
     Width = 753
     Font.CharSet = EASTEUROPE_CHARSET
     Font.Color = clBlack
@@ -796,14 +796,16 @@ object frmMain: TfrmMain
   end
   inline SynEdit: TSynEdit
     Left = 0
-    Height = 508
+    Height = 610
     Top = 26
     Width = 753
     Align = alClient
+    Font.CharSet = ANSI_CHARSET
+    Font.Color = clBlack
     Font.Height = -13
     Font.Name = 'Courier New'
     Font.Pitch = fpFixed
-    Font.Quality = fqNonAntialiased
+    Font.Quality = fqDraft
     ParentColor = False
     ParentFont = False
     TabOrder = 3
@@ -1294,8 +1296,8 @@ object frmMain: TfrmMain
     end
   end
   object MainMenu: TMainMenu
-    left = 240
-    top = 96
+    Left = 240
+    Top = 96
     object mnuFile: TMenuItem
       Caption = 'File'
       object mnuNew: TMenuItem
@@ -1979,8 +1981,8 @@ object frmMain: TfrmMain
         end
       end
     end
-    object mnuView: TMenuItem
-      Caption = 'View'
+    object mnuSettings: TMenuItem
+      Caption = 'Settings'
       object mnuToolbar: TMenuItem
         Caption = 'Toolbar'
         Checked = True
@@ -1991,14 +1993,15 @@ object frmMain: TfrmMain
         Checked = True
         OnClick = mnuStatusBarClick
       end
-      object mnuCodeFolding: TMenuItem
-        Caption = 'Code folding'
+      object mnuGutter: TMenuItem
+        Caption = 'Show Gutter'
         Checked = True
-        OnClick = mnuCodeFoldingClick
+        OnClick = mnuGutterClick
       end
-    end
-    object mnuSettings: TMenuItem
-      Caption = 'Settings'
+      object mnuHighLighter: TMenuItem
+        Caption = 'HighLighter'
+        OnClick = mnuHighLighterClick
+      end
       object mnyEditorSettings: TMenuItem
         Caption = 'Editor settings'
         Bitmap.Data = {
@@ -2043,11 +2046,31 @@ object frmMain: TfrmMain
         OnClick = MnuFCRunClick
       end
     end
+    object MenuItem1: TMenuItem
+      Caption = 'CNC'
+      object mnuConfgurePort: TMenuItem
+        Caption = 'Confgure Port'
+        OnClick = mnuConfgurePortClick
+      end
+      object mnuSend: TMenuItem
+        Caption = 'Send'
+        OnClick = mnuSendClick
+      end
+      object mnuReceive: TMenuItem
+        Caption = 'Receive'
+        OnClick = mnuReceiveClick
+      end
+    end
+    object mnuPlugIns: TMenuItem
+      Caption = 'Plug Ins'
+    end
+    object mnuTools: TMenuItem
+      Caption = 'Tools'
+    end
     object mnuHelp: TMenuItem
       Caption = 'Help'
       object MnuContents: TMenuItem
         Caption = 'Contents'
-        OnClick = MnuContentsClick
       end
       object MnuAbout: TMenuItem
         Caption = 'About'
@@ -2058,18 +2081,18 @@ object frmMain: TfrmMain
   object OpenDialog: TOpenDialog
     DefaultExt = '.txt'
     Options = [ofExtensionDifferent, ofEnableSizing, ofViewDetail]
-    left = 88
-    top = 96
+    Left = 88
+    Top = 96
   end
   object SaveDialog: TSaveDialog
     DefaultExt = '.txt'
     Options = [ofOverwritePrompt, ofEnableSizing, ofViewDetail]
-    left = 312
-    top = 96
+    Left = 312
+    Top = 96
   end
   object EditPopupMenu: TPopupMenu
-    left = 160
-    top = 96
+    Left = 160
+    Top = 96
     object popUndo: TMenuItem
       Caption = 'Undo'
       Bitmap.Data = {
@@ -2297,16 +2320,29 @@ object frmMain: TfrmMain
   end
   object Logger: TEventLog
     AppendContent = False
-    Identification = 'SynEdit+'
+    Identification = 'CodeSharkFC'
     LogType = ltFile
     Active = False
     RaiseExceptionOnError = False
     DefaultEventType = etCustom
-    FileName = 'synedit.log'
+    FileName = 'CodeSharkFC.log'
     CustomLogType = 0
     EventIDOffset = 0
     Paused = False
-    left = 449
-    top = 46
+    Left = 392
+    Top = 96
+  end
+  object Serial: TLazSerial
+    Active = False
+    BaudRate = br__9600
+    DataBits = db7bits
+    Parity = pEven
+    FlowControl = fcXonXoff
+    StopBits = sbOne
+    Device = 'COM1'
+    RcvLineCRLF = True
+    OnRxData = SerialRxData
+    Left = 88
+    Top = 184
   end
 end

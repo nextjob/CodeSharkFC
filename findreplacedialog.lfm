@@ -1,7 +1,7 @@
 object LazFindReplaceDialog: TLazFindReplaceDialog
-  Left = 288
+  Left = 2828
   Height = 373
-  Top = 156
+  Top = 241
   Width = 420
   HorzScrollBar.Page = 419
   VertScrollBar.Page = 372
@@ -22,8 +22,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
   KeyPreview = True
   OnChangeBounds = FormChangeBounds
   OnClose = FormClose
-  Position = poDesktopCenter
-  LCLVersion = '1.8.4.0'
+  Position = poOwnerFormCenter
+  LCLVersion = '2.0.12.0'
   object TextToFindLabel: TLabel
     AnchorSideLeft.Control = Owner
     AnchorSideTop.Control = TextToFindComboBox
@@ -108,8 +108,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     OnResize = OptionsGroupBoxResize
     object PromptOnReplaceCheckBox: TCheckBox
       Left = 6
-      Height = 17
-      Top = 128
+      Height = 19
+      Top = 136
       Width = 183
       Align = alTop
       BorderSpacing.Top = 6
@@ -123,8 +123,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     end
     object MultiLineCheckBox: TCheckBox
       Left = 6
-      Height = 17
-      Top = 99
+      Height = 19
+      Top = 105
       Width = 183
       Align = alTop
       BorderSpacing.Top = 6
@@ -136,8 +136,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     end
     object RegularExpressionsCheckBox: TCheckBox
       Left = 6
-      Height = 17
-      Top = 70
+      Height = 19
+      Top = 74
       Width = 183
       Align = alTop
       BorderSpacing.Top = 6
@@ -149,8 +149,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     end
     object WholeWordsOnlyCheckBox: TCheckBox
       Left = 6
-      Height = 17
-      Top = 41
+      Height = 19
+      Top = 43
       Width = 183
       Align = alTop
       BorderSpacing.Top = 6
@@ -162,7 +162,7 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     end
     object CaseSensitiveCheckBox: TCheckBox
       Left = 6
-      Height = 17
+      Height = 19
       Top = 12
       Width = 183
       Align = alTop
@@ -197,16 +197,16 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     TabOrder = 4
     object SelectedRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 8
+      Height = 19
+      Top = 6
       Width = 183
       Caption = 'Selected text'
       TabOrder = 0
     end
     object GlobalRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 33
+      Height = 19
+      Top = 31
       Width = 183
       Caption = 'Global'
       Checked = True
@@ -237,18 +237,18 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     TabOrder = 5
     object BackwardRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 8
+      Height = 19
+      Top = 6
       Width = 183
-      Caption = 'Rewid search'
+      Caption = 'Backward'
       TabOrder = 0
     end
     object ForwardRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 33
+      Height = 19
+      Top = 31
       Width = 183
-      Caption = 'Forward search'
+      Caption = 'Forward'
       Checked = True
       TabOrder = 1
       TabStop = True
@@ -277,8 +277,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     TabOrder = 3
     object FromCursorRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 8
+      Height = 19
+      Top = 6
       Width = 183
       AutoSize = False
       Caption = 'From cursor'
@@ -288,8 +288,8 @@ object LazFindReplaceDialog: TLazFindReplaceDialog
     end
     object EntireScopeRadioButton: TRadioButton
       Left = 6
-      Height = 17
-      Top = 33
+      Height = 19
+      Top = 31
       Width = 183
       AutoSize = False
       Caption = 'Entire scope'

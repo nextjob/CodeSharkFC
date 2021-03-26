@@ -21,11 +21,10 @@ See the FreeCAD forum post: https://forum.freecadweb.org/viewtopic.php?f=22&t=42
 __Note:__ The sample application was created with the Lazarus IDE and complied with Free Pascal, a Delphi port is available [Here](https://github.com/nextjob/CodeSharkFCs).
 
 * Windows & Linux operating System
-* Latest FreeCAD [v0.19pre](https://github.com/FreeCAD/FreeCAD/releases)
+* Latest FreeCAD (https://github.com/FreeCAD/FreeCAD/releases)
 * [Lazarus IDE](https://www.lazarus-ide.org/)
-* [python4delphi](https://github.com/pyscripter/python4delphi) 
-
-Install the `python4delphi` package into the Lazarus IDE see: https://wiki.freepascal.org/Install_Packages
+* LazSerial via Lazarus Online Package Manager
+* PythonForLazarus via Lazarus Online Package Manager
 
 ## Installation
     
@@ -41,10 +40,12 @@ Install the `python4delphi` package into the Lazarus IDE see: https://wiki.freep
 
 ## Troubleshooting
 
+See FreeCADSetupNotesLinux.txt for Linux specific issues. 
+
 Error: `Error - could not load a Python engine`
 
 Problem: FreeCAD install does not ?always? load all the required Python files for `python4delphi` to the interface properly.  
-Solution: Installing python from python.org (currently version Python 3.6.6) fixes this issue.
+Solution: Installing python from python.org (current FreeCAD version Python 3.8.6) fixes this issue.
 
 Error: `Error - This application failed to start because it could not find or load the Qt platform plugin "windows"`  
 
